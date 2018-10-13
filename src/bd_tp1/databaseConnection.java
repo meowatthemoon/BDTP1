@@ -32,15 +32,18 @@ public class databaseConnection {
         this.password=password;
         this.lblErro=lblErro;
     }
-    public void connect() {
+    public boolean connect() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String connectionURL = "jdbc:sqlserver://"+host+";databaseName="+nomeDB+";user="+user+";password="+password;
             Connection con = DriverManager.getConnection(connectionURL);
         } catch (ClassNotFoundException ex) {
             lblErro.setText("ERRO 1:"+ex.getMessage());
+            return false;
         } catch (SQLException ex) {
             lblErro.setText("ERRO 2:"+ex.getMessage());
+            return false;
         }
+        return true;
     }
 }
