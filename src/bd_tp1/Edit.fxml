@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="bd_tp1.EditController">
-   <children>
-      <Label fx:id="lbl" layoutX="283.0" layoutY="130.0" text="Label" />
-   </children>
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.EditController">
+   <bottom>
+      <Button mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER" />
+   </bottom>
+   <top>
+      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Nome">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </Label>
+            <TextField fx:id="txtNome" GridPane.columnIndex="1" />
+            <Button mnemonicParsing="false" onAction="#handleActionUpdateNome" text="(fazer)" GridPane.columnIndex="2" />
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </GridPane>
+   </top>
+   <center>
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
+         <content>
+            <GridPane fx:id="gridProdutos" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>

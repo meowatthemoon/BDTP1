@@ -64,7 +64,6 @@ public class Edit_EscolherController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         new editFactura(Integer.parseInt(b.getText()));
-
                         Parent window3; //we need to load the layout that we want to swap
                         try {
                             window3 = FXMLLoader.load(getClass().getResource("Edit.fxml"));

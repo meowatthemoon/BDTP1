@@ -17,8 +17,8 @@
   </rowConstraints>
    <children>
       <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioEdit" text="Edit  (Fazer)" />
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" text="Work  (Fazer)" GridPane.columnIndex="1" />
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" text="Browser  (Fazer)" GridPane.rowIndex="1" />
+      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioWork" text="Work  (Fazer)" GridPane.columnIndex="1" />
+      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioBrowser" text="Browser  (Fazer)" GridPane.rowIndex="1" />
       <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" text="Log  (Fazer)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
 </GridPane>
