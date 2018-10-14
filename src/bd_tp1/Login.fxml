@@ -34,7 +34,7 @@
          </GridPane.margin>
       </Button>
       <TextField fx:id="txtHost" alignment="CENTER" text="localhost:1433" GridPane.rowIndex="1" />
-      <TextField fx:id="txtDatabase" alignment="CENTER" text="DBProject" GridPane.rowIndex="3" />
+      <TextField fx:id="txtDatabase" alignment="CENTER" text="TBD_TRAB1" GridPane.rowIndex="3" />
       <TextField fx:id="txtUser" alignment="CENTER" text="test" GridPane.rowIndex="5" />
       <PasswordField fx:id="txtPassword" alignment="CENTER" text="test" GridPane.rowIndex="7" />
       <Label fx:id="lblErro" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" textFill="RED" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
