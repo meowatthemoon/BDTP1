@@ -2,8 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -21,24 +20,12 @@
     <RowConstraints maxHeight="127.00000610351566" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="voltar" mnemonicParsing="false" prefHeight="27.0" prefWidth="122.0" text="Voltar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <Button fx:id="voltar" mnemonicParsing="false" onAction="#handleActioVoltar" prefHeight="27.0" prefWidth="122.0" text="Voltar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <Label alignment="CENTER" prefHeight="26.0" prefWidth="845.0" text=" “N” linhas mais recentes da tabela LogOperations" textAlignment="CENTER" textFill="#291c1c" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font name="Arial Bold" size="19.0" />
          </font>
       </Label>
-      <TableView fx:id="tableLOG" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-        <columns>
-          <TableColumn fx:id="CNumReg" prefWidth="75.0" text="NumReg" />
-          <TableColumn fx:id="CEventType" prefWidth="75.0" text="EventType" />
-            <TableColumn fx:id="CObjecto" prefWidth="75.0" text="Objecto" />
-            <TableColumn fx:id="CValor" prefWidth="75.0" text="Valor" />
-            <TableColumn fx:id="CReferencia" prefWidth="75.0" text="Referência" />
-            <TableColumn fx:id="CUserID" prefWidth="75.0" text="UserID" />
-            <TableColumn fx:id="CTerminaID" prefWidth="75.0" text="TerminaID" />
-            <TableColumn fx:id="CTerminalName" prefWidth="105.60003662109375" text="TerminalName" />
-            <TableColumn fx:id="CDCriacao" prefWidth="89.60002441406255" text="DCriacao" />
-        </columns>
-      </TableView>
+      <ScrollPane fx:id="gridLog" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
    </children>
 </GridPane>
