@@ -1,7 +1,10 @@
 package bd_tp1;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Label;
@@ -22,28 +25,42 @@ public class databaseConnection {
     private static String user;//test
     private static String password;//test
     private Label lblErro;
+    private static Connection con;
+
     public databaseConnection() {
 
     }
-    public databaseConnection(String host,String nomeDB,String user,String password,Label lblErro){
-        this.host=host;
-        this.nomeDB=nomeDB;
-        this.user=user;
-        this.password=password;
-        this.lblErro=lblErro;
+
+    public databaseConnection(String host, String nomeDB, String user, String password, Label lblErro) {
+        this.host = host;
+        this.nomeDB = nomeDB;
+        this.user = user;
+        this.password = password;
+        this.lblErro = lblErro;
     }
+
     public boolean connect() {
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String connectionURL = "jdbc:sqlserver://"+host+";databaseName="+nomeDB+";user="+user+";password="+password;
-            Connection con = DriverManager.getConnection(connectionURL);
+            String connectionURL = "jdbc:sqlserver://" + host + ";databaseName=" + nomeDB + ";user=" + user + ";password=" + password;
+            con = DriverManager.getConnection(connectionURL);
         } catch (ClassNotFoundException ex) {
-            lblErro.setText("ERRO 1:"+ex.getMessage());
+            lblErro.setText(ex.getMessage());
             return false;
         } catch (SQLException ex) {
-            lblErro.setText("ERRO 2:"+ex.getMessage());
+            lblErro.setText(ex.getMessage());
             return false;
         }
         return true;
+    }
+
+    public ResultSet createQuery(String query) {
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            return rs;
+        } catch (SQLException ex) {
+            return null;
+        }
     }
 }
