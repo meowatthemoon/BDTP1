@@ -69,7 +69,8 @@ public class LogController implements Initializable {
         gridLog.add(new Label("TerminalName"),  7, 0);
         gridLog.add(new Label("DCriacao"),      8, 0);
        
-        //ResultSet linhasLog2 = new databaseConnection().createQuery("Select ProdutoID,Designacao,Preco,Qtd from FactLinha where FacturaID=" + facturaID_selecionada);
+        //  Fazer:
+        // ResultSet linhasLog2 = new databaseConnection().createQuery("Select ProdutoID,Designacao,Preco,Qtd from FactLinha where FacturaID=" + facturaID_selecionada);
         ResultSet linhasLog = new databaseConnection().createQuery("Select TOP 10 * from LogOperations");
 
         try {
