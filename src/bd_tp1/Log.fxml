@@ -20,12 +20,13 @@
     <RowConstraints maxHeight="127.00000610351566" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="voltar" mnemonicParsing="false" onAction="#handleActioVoltar" prefHeight="27.0" prefWidth="122.0" text="Voltar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+      <Button fx:id="voltar" mnemonicParsing="false" onAction="#handleActioVoltar" prefHeight="27.0" prefWidth="122.0" text="Voltar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
       <Label alignment="CENTER" prefHeight="26.0" prefWidth="845.0" text=" “N” linhas mais recentes da tabela LogOperations" textAlignment="CENTER" textFill="#291c1c" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <font>
             <Font name="Arial Bold" size="19.0" />
          </font>
       </Label>
       <ScrollPane fx:id="gridLog" maxHeight="-Infinity" maxWidth="-Infinity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+      <Button mnemonicParsing="false" onAction="#handleActioRefresh" prefHeight="26.0" prefWidth="100.0" text="Atualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
    </children>
 </GridPane>

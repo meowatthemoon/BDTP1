@@ -48,6 +48,7 @@ public class LogController implements Initializable {
     
     @FXML
     private void handleActioVoltar(ActionEvent event) {
+        timer = null;   //stop
         Parent window3; //we need to load the layout that we want to swap
         try {
             window3 = FXMLLoader.load(getClass().getResource("Main_Menu.fxml"));
@@ -58,6 +59,11 @@ public class LogController implements Initializable {
             mainWindow.setScene(newScene); //here we simply set the new scene
         } catch (IOException ex) {
         }
+    }
+    
+    @FXML
+    private void handleActioRefresh(ActionEvent event) {
+        mostrarLogOperations();
     }
     
     public void mostrarLogOperations(){
