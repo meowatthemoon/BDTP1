@@ -6,10 +6,12 @@
 package bd_tp1;
 
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,8 +41,10 @@ public class LogController implements Initializable {
     GridPane gridLog;
     
     //Ainda não sei se preciso disto:
-    int facturaID_selecionada;
     volatile Thread timer;
+    
+    //N Tabelas que o cliente quiser
+    int numeroTabelas = 10;
     
     @FXML
     private void handleActioVoltar(ActionEvent event) {
@@ -71,16 +75,23 @@ public class LogController implements Initializable {
        
         //  Fazer:
         // ResultSet linhasLog2 = new databaseConnection().createQuery("Select ProdutoID,Designacao,Preco,Qtd from FactLinha where FacturaID=" + facturaID_selecionada);
-        ResultSet linhasLog = new databaseConnection().createQuery("Select TOP 10 * from LogOperations");
+        
+        
+        ResultSet linhasLog = new databaseConnection().createQuery("Select TOP " + numeroTabelas + "* from LogOperations");
 
         try {
             int index_linha = 1;
             while (linhasLog.next()) {
-                //Acabar depois Ramoa
-                gridLog.add(new Label(linhasLog.getInt("ProdutoID") + ""), 0, index_linha);
-                gridLog.add(new Label(linhasLog.getString("Designacao")), 1, index_linha);
-                gridLog.add(new Label(linhasLog.getFloat("Preco") + ""), 2, index_linha);
-                gridLog.add(new Label(linhasLog.getInt("Qtd") + ""), 3, index_linha);
+                //Confirmar depois se está correto
+                gridLog.add(new Label(linhasLog.getInt("NumReg") + ""),     0, index_linha);
+                gridLog.add(new Label(linhasLog.getString("EventType")),    1, index_linha);
+                gridLog.add(new Label(linhasLog.getString("Objecto")),      2, index_linha);
+                gridLog.add(new Label(linhasLog.getString("Valor")),        3, index_linha);
+                gridLog.add(new Label(linhasLog.getString("Referencia")),   4, index_linha);
+                gridLog.add(new Label(linhasLog.getString("UserID")),       5, index_linha);
+                gridLog.add(new Label(linhasLog.getString("TerminalD")),    6, index_linha);
+                gridLog.add(new Label(linhasLog.getString("TerminalName")), 7, index_linha);
+                gridLog.add(new Label(linhasLog.getDate("DCriacao") + ""),  8, index_linha);
                 index_linha++;
             }
         } catch (SQLException ex) {
@@ -92,7 +103,25 @@ public class LogController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        timer = new Thread() {
+            public void run() {
+                while (timer != null) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            mostrarLogOperations();
+                        }
+                    });
+                    try {
+                        sleep(10000);//FAZER TEMPO
+                    } catch (InterruptedException ex) {
+                    }
+                }
+            }
+        };
+        timer.start();
+    
     }    
     
     
