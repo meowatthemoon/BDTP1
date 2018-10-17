@@ -7,6 +7,7 @@ package bd_tp1;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -29,13 +30,13 @@ public class WorkController implements Initializable {
     @FXML
     TextField txtNumero;
     public void insert(){
-        //FAZER
+        //TODO
     }
     public void update(){
-        //FAZER
+        //TODO
     }
     public void delete(){
-        //FAZER
+        //TODO
     }
     @FXML
     private void handleActioWork(ActionEvent event) {
@@ -46,7 +47,13 @@ public class WorkController implements Initializable {
                 txtNumero.setText("");
                 return;
             }
-            
+            databaseConnection dbc = new databaseConnection("localhost:1433", "TBD_TRAB1", "user", ""); //don't hardcore the values
+            if(dbc.connect())
+                System.out.println("connection created --- Working in " + txtNumero.getText() + " rows of data");
+            else{
+                System.out.println("Connection failed");
+                return;
+            }
             for (int i = 0; i < num_acoes; i++) {
                 Random r = new Random();
                 int aleat = r.nextInt(101 - 1) + 1;

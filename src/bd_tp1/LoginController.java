@@ -42,6 +42,7 @@ public class LoginController implements Initializable {
         if (new databaseConnection(txtHost.getText(), txtDatabase.getText(), txtUser.getText(), txtPassword.getText(), lblErro).connect()) {
             Parent window3; //we need to load the layout that we want to swap
             try {
+                //maybe close the connection here since we know it's working?
                 window3 = FXMLLoader.load(getClass().getResource("Main_Menu.fxml"));
                 Scene newScene; //then we create a new scene with our new layout
                 newScene = new Scene(window3);

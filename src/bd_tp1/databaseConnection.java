@@ -38,6 +38,13 @@ public class databaseConnection {
         this.password = password;
         this.lblErro = lblErro;
     }
+    
+        public databaseConnection(String host, String nomeDB, String user, String password) {
+        this.host = host;
+        this.nomeDB = nomeDB;
+        this.user = user;
+        this.password = password;
+    }
 
     public boolean connect() {
         try {
