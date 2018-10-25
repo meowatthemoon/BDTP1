@@ -66,6 +66,8 @@ public class WorkController implements Initializable {
         
         ResultSet rs = dbc.createQuery(sql);
         System.out.println(rs.toString());
+        
+        
     }
     public void update(){
         //TODO
@@ -102,11 +104,10 @@ public class WorkController implements Initializable {
                 int aleat = r.nextInt(101 - 1) + 1;
                 char operacao;
                 if(aleat<20){
+                    System.out.println("calling insert");
                     insert();
-                    System.out.println("insert"+i);
                 }
-                else if(aleat<70){
-                    System.out.println("update"+i);
+                else if(aleat<70)
                     update();
                 }
                 else{
