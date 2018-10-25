@@ -25,7 +25,7 @@ public class databaseConnection {
     private static String user;//test
     private static String password;//test
     private Label lblErro;
-    private static Connection con;
+    public static Connection con;
 
     public databaseConnection() {
 
@@ -44,6 +44,10 @@ public class databaseConnection {
         this.nomeDB = nomeDB;
         this.user = user;
         this.password = password;
+    }
+        
+    public Connection getCon(){
+        return this.con;
     }
 
     public boolean connect() {
@@ -67,6 +71,7 @@ public class databaseConnection {
             ResultSet rs = st.executeQuery(query);
             return rs;
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
             return null;
         }
     }

@@ -7,6 +7,7 @@ package bd_tp1;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -26,7 +27,9 @@ import javafx.stage.Stage;
  * @author Andre
  */
 public class WorkController implements Initializable {
-
+    
+    databaseConnection dbc = new databaseConnection();;
+    
     @FXML
     TextField txtNumero;
     public void insert(){
@@ -55,9 +58,11 @@ public class WorkController implements Initializable {
         System.out.println(nome + "   " + address);
         
         
-        sql = "INSERT INTO Factura(" + factID + "," + clientID + ",'" + nome + "','" + address + "')";
-        
+        sql = "INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')";
         System.out.println(sql);
+        
+        ResultSet rs = dbc.createQuery(sql);
+        System.out.println(rs.toString());
     }
     public void update(){
         //TODO
