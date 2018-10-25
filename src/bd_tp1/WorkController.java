@@ -65,9 +65,6 @@ public class WorkController implements Initializable {
         System.out.println(sql);
         
         ResultSet rs = dbc.createQuery(sql);
-        System.out.println(rs.toString());
-        
-        
     }
     public void update(){
         //TODO
@@ -104,10 +101,11 @@ public class WorkController implements Initializable {
                 int aleat = r.nextInt(101 - 1) + 1;
                 char operacao;
                 if(aleat<20){
-                    System.out.println("calling insert");
+                    System.out.println("insert"+i);
                     insert();
                 }
-                else if(aleat<70)
+                else if(aleat<70){
+                    System.out.println("update"+i);
                     update();
                 }
                 else{
@@ -115,7 +113,6 @@ public class WorkController implements Initializable {
                     delete();
                 }
             }
-
         } catch (Exception e) {//Se não for um numero
             txtNumero.setText("");
         }
