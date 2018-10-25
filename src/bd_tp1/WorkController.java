@@ -30,7 +30,34 @@ public class WorkController implements Initializable {
     @FXML
     TextField txtNumero;
     public void insert(){
-        //TODO
+        String sql;
+        Random random = new Random();
+        int factID = Math.abs(random.nextInt()) + 1;
+        int clientID = Math.abs(random.nextInt()) + 1;
+        int leftLimit = 65; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetNameStringLength = 6;
+        int targetAddressStringLength = 20;
+        StringBuilder buffer = new StringBuilder(targetNameStringLength);
+        for (int i = 0; i < targetNameStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int) 
+              (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        String nome = buffer.toString();
+        for (int i = 0; i < targetAddressStringLength; i++) {
+            int randomLimitedInt = leftLimit + (int) 
+              (random.nextFloat() * (rightLimit - leftLimit + 1));
+            buffer.append((char) randomLimitedInt);
+        }
+        String address = buffer.toString();
+
+        System.out.println(nome + "   " + address);
+        
+        
+        sql = "INSERT INTO Factura(" + factID + "," + clientID + ",'" + nome + "','" + address + "')";
+        
+        System.out.println(sql);
     }
     public void update(){
         //TODO
@@ -45,13 +72,6 @@ public class WorkController implements Initializable {
             //Se numero for <1
             if (num_acoes < 1) {
                 txtNumero.setText("");
-                return;
-            }
-            databaseConnection dbc = new databaseConnection("localhost:1433", "TBD_TRAB1", "user", ""); //don't hardcore the values
-            if(dbc.connect())
-                System.out.println("connection created --- Working in " + txtNumero.getText() + " rows of data");
-            else{
-                System.out.println("Connection failed");
                 return;
             }
             for (int i = 0; i < num_acoes; i++) {
