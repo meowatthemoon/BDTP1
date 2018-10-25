@@ -6,6 +6,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LogController">
-    
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LogController">
+   <top>
+      <Button mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" BorderPane.alignment="CENTER" />
+   </top>
+   <bottom>
+      <Button mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
+         <content>
+            <GridPane fx:id="gridLogs" maxHeight="-Infinity" maxWidth="-Infinity">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </content>
+      </ScrollPane>
+   </center>
+</BorderPane>
