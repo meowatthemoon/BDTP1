@@ -9,8 +9,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,12 +71,26 @@ public class WorkController implements Initializable {
         //TODO
     }
     public void delete(){
-        //TODO
+        try {
+            ResultSet rs=new databaseConnection().createQuery("Select max(FacturaID) from Factura");
+            rs.next();
+            int maxID=rs.getInt(1);
+            
+            Random r = new Random();
+            int aleat = r.nextInt(maxID) + 1;
+            dbc.createQuery("delete from FactLinha where FacturaID="+maxID);
+            dbc.createQuery("delete from Factura where FacturaID="+maxID);
+            System.out.println("elimnei "+maxID+"?");
+        } catch (SQLException ex) {
+            Logger.getLogger(WorkController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     @FXML
     private void handleActioWork(ActionEvent event) {
+        System.out.println("entrei");
         try {
             int num_acoes = Integer.parseInt(txtNumero.getText());
+            System.out.println("num acoes:"+num_acoes);
             //Se numero for <1
             if (num_acoes < 1) {
                 txtNumero.setText("");
@@ -81,14 +98,21 @@ public class WorkController implements Initializable {
             }
             for (int i = 0; i < num_acoes; i++) {
                 Random r = new Random();
+                System.out.println("acao "+i);
                 int aleat = r.nextInt(101 - 1) + 1;
                 char operacao;
-                if(aleat<20)
+                if(aleat<20){
                     insert();
-                else if(aleat<70)
+                    System.out.println("insert"+i);
+                }
+                else if(aleat<70){
+                    System.out.println("update"+i);
                     update();
-                else
+                }
+                else{
+                    System.out.println("delete"+i);
                     delete();
+                }
             }
 
         } catch (Exception e) {//Se não for um numero
