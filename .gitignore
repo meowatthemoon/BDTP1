@@ -2,3 +2,5 @@
 /build/
 /dist/
 sqljdbc42\.jar
+
+nbproject/project\.properties
