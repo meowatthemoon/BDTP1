@@ -26,6 +26,7 @@ public class Main_MenuController implements Initializable {
 
     @FXML
     private void handleActioEdit(ActionEvent event) {
+        System.out.println("Calling Edit Window");
         Parent window3; //we need to load the layout that we want to swap
         try {
             window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
@@ -35,10 +36,12 @@ public class Main_MenuController implements Initializable {
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
     }
     @FXML
     private void handleActioWork(ActionEvent event) {
+        System.out.println("Calling Work Window");
         Parent window3; //we need to load the layout that we want to swap
         try {
             window3 = FXMLLoader.load(getClass().getResource("Work.fxml"));
@@ -48,10 +51,12 @@ public class Main_MenuController implements Initializable {
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
     }
     @FXML
     private void handleActioBrowser(ActionEvent event) {
+        System.out.println("Calling Browser Window");
         Parent window3; //we need to load the layout that we want to swap
         try {
             window3 = FXMLLoader.load(getClass().getResource("Browser.fxml"));
@@ -61,11 +66,13 @@ public class Main_MenuController implements Initializable {
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
     }
     
         @FXML
     private void handleActioLog(ActionEvent event) {
+        System.out.println("Calling Log Window");
         Parent window3; //we need to load the layout that we want to swap
         try {
             window3 = FXMLLoader.load(getClass().getResource("Log.fxml"));
@@ -75,6 +82,7 @@ public class Main_MenuController implements Initializable {
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
         } catch (IOException ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
