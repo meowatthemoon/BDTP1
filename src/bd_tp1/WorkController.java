@@ -76,22 +76,23 @@ public class WorkController implements Initializable {
         
         //setup SQL
         sql = "BEGIN TRANSACTION";
-        dbc.createQuery(sql);
+        dbc.createSettingQuery(sql);
+        System.out.println("Transaction Begun");
         sql = "INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')";
         System.out.println(sql);
-        ResultSet rs = dbc.createQuery(sql);
+        System.out.println(dbc.createModificationQuery(sql));
         sql = "COMMIT";
-        dbc.createQuery(sql);
+        dbc.createSettingQuery(sql);
+        System.out.println("Transaction Ended");
     }
     public void update(){
         //TODO
     }
-    public void delete(){
+    public void delete(){ //This must be wrapped into a whole transaction
         try {
-            ResultSet rs=new databaseConnection().createQuery("Select max(FacturaID) from Factura");
+            ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
             rs.next();
             int maxID=rs.getInt(1);
-            
             Random r = new Random();
             int aleat = r.nextInt(maxID) + 1;
             dbc.createQuery("delete from FactLinha where FacturaID="+maxID);

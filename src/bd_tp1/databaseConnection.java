@@ -55,16 +55,36 @@ public class databaseConnection {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String connectionURL = "jdbc:sqlserver://" + host + ";databaseName=" + nomeDB + ";user=" + user + ";password=" + password;
             con = DriverManager.getConnection(connectionURL);
-        } catch (ClassNotFoundException ex) {
-            lblErro.setText(ex.getMessage());
-            return false;
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             lblErro.setText(ex.getMessage());
             return false;
         }
         return true;
     }
 
+    public int createModificationQuery(String query) {
+        try {
+            Statement st = con.createStatement();
+            int rs = st.executeUpdate(query);
+            return rs;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return -1;
+        }
+    }
+    
+    public boolean createSettingQuery(String query) {
+        try {
+            Statement st = con.createStatement();
+            boolean rs = st.execute(query);
+            System.out.println(rs + " in db");
+            return rs;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+    
     public ResultSet createQuery(String query) {
         try {
             Statement st = con.createStatement();
