@@ -40,7 +40,16 @@ public class WorkController implements Initializable {
     ChoiceBox CBopType;
     @FXML
     ChoiceBox CBIsolLevel;
-    
+    public String randomString(int length){
+        StringBuilder bufferDESIG = new StringBuilder(length);
+        Random random = new Random();
+        for (int j = 0; j < length; j++) {
+            int randomLimitedInt = length + (int) 
+              (random.nextFloat() * (122 - 65 + 1));
+            bufferDESIG.append((char) randomLimitedInt);
+        }
+        return bufferDESIG.toString();
+    }
     public void insert(){
         //setup
         String sql;
@@ -76,7 +85,7 @@ public class WorkController implements Initializable {
         //setup SQL
         sql = "BEGIN TRANSACTION";
         dbc.createSettingQuery(sql);
-        System.out.println("Transaction Begun");
+        System.out.println("Transaction Begun: insert");
         ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
         try{
             if(rs.next())
@@ -107,17 +116,8 @@ public class WorkController implements Initializable {
         //Criar uma FactLinha para cada Produto:
         for (int i = 0; i <numeroProdutos ; i++){
             
-            int targetDesigStringLength = 20;
             int produtoID = Math.abs(random.nextInt()) + 1;
-            
-            //generation of designacao
-            StringBuilder bufferDESIG = new StringBuilder(targetNameStringLength);
-            for (int j = 0; j < targetDesigStringLength; j++) {
-                int randomLimitedInt = leftLimit + (int) 
-                  (random.nextFloat() * (rightLimit - leftLimit + 1));
-                bufferDESIG.append((char) randomLimitedInt);
-            }
-            String designacao = bufferDESIG.toString();
+            String designacao = randomString(20);
 
             int preco = random.nextInt(99999999) + 1;
             int quantidade = random.nextInt(99999999) + 1;
@@ -134,28 +134,47 @@ public class WorkController implements Initializable {
             
     }
     public void update(){
-        //TODO
+        try {
+            dbc.createSettingQuery("BEGIN TRANSACTION");
+            System.out.println("Transaction Begun: Update");
+            //escolher ID aleatório
+            ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
+            rs.next();
+            int maxID=rs.getInt(1);
+            Random r = new Random();
+            int facturaID = r.nextInt(maxID) + 1;
+            //mudar id, nome e morada do cliente
+            r=new Random();
+            int clienteID=r.nextInt(100)+1;
+            String nome=randomString(20);
+            String morada=randomString(20);
+            //update
+            dbc.createQuery("update Factura set ClienteID="+clienteID+",Nome='"+nome+"',Morada='"+morada+"' where FacturaID="+facturaID);
+            //commit transaction
+            dbc.createSettingQuery("COMMIT");
+            System.out.println("Transaction Ended");
+        } catch (SQLException ex) {
+            Logger.getLogger(WorkController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     public void delete(){ //This must be wrapped into a whole transaction
         try {
-            String sql;
-            //begin transaction
-            sql = "BEGIN TRANSACTION";
+            String sql= "BEGIN TRANSACTION";
             dbc.createSettingQuery(sql);
-            System.out.println("Transaction Begun");
+            System.out.println("Transaction Begun: delete");
             //delete operations
             ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
             rs.next();
             int maxID=rs.getInt(1);
             Random r = new Random();
-            int aleat = r.nextInt(maxID) + 1;
-            dbc.createQuery("delete from FactLinha where FacturaID="+maxID);
-            dbc.createQuery("delete from Factura where FacturaID="+maxID);
-            System.out.println("elimnei "+maxID+"?");
+            int facturaID = r.nextInt(maxID) + 1;
+            dbc.createQuery("delete from FactLinha where FacturaID="+facturaID);
+            dbc.createQuery("delete from Factura where FacturaID="+facturaID);
+            System.out.println("elimnei "+facturaID+"?");
             //commit transaction
             sql = "COMMIT";
             dbc.createSettingQuery(sql);
-            System.out.println("Transaction Ended");
+            System.out.println("Transaction Ended: delete");
         } catch (SQLException ex) {
             Logger.getLogger(WorkController.class.getName()).log(Level.SEVERE, null, ex);
         }
