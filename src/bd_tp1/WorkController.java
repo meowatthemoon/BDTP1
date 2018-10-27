@@ -40,12 +40,15 @@ public class WorkController implements Initializable {
     ChoiceBox CBopType;
     @FXML
     ChoiceBox CBIsolLevel;
+    
     public String randomString(int length){
+        int leftLimit = 65; // letter 'a'
+        int rightLimit = 122; // letter 'Z'
         StringBuilder bufferDESIG = new StringBuilder(length);
         Random random = new Random();
-        for (int j = 0; j < length; j++) {
-            int randomLimitedInt = length + (int) 
-              (random.nextFloat() * (122 - 65 + 1));
+        for (int i = 0; i < length; i++) {
+            int randomLimitedInt = leftLimit + (int) 
+              (random.nextFloat() * (rightLimit - leftLimit + 1));
             bufferDESIG.append((char) randomLimitedInt);
         }
         return bufferDESIG.toString();
@@ -57,27 +60,10 @@ public class WorkController implements Initializable {
         
         int factID;
         int clientID = Math.abs(random.nextInt()) + 1;
-        
-        //setup for random string generation
-        int leftLimit = 65; // letter 'a'
-        int rightLimit = 122; // letter 'z'
-        int targetNameStringLength = 6;
-        int targetAddressStringLength = 20;
         //generation of nome
-        StringBuilder buffer = new StringBuilder(targetNameStringLength);
-        for (int i = 0; i < targetNameStringLength; i++) {
-            int randomLimitedInt = leftLimit + (int) 
-              (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
-        }
-        String nome = buffer.toString();
+        String nome = randomString(12);
         //generation of address
-        for (int i = 0; i < targetAddressStringLength; i++) {
-            int randomLimitedInt = leftLimit + (int) 
-              (random.nextFloat() * (rightLimit - leftLimit + 1));
-            buffer.append((char) randomLimitedInt);
-        }
-        String address = buffer.toString();
+        String address = randomString(30);
         //testing purposes
         System.out.println(nome + "   " + address);
         
