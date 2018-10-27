@@ -81,11 +81,7 @@ public class WorkController implements Initializable {
         sql = "INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')";
         System.out.println(sql);
         System.out.println(dbc.createModificationQuery(sql));
-        sql = "COMMIT";
-        dbc.createSettingQuery(sql);
-        System.out.println("Transaction Ended");
-        
-
+               
         
         //Depois de inserimos a Fatura, temos de inserir as suas linhas, assim como os seus produtos.
         //Vamos primeiro fazer um ciclo de quantos produtos a fatura irá ter, vamos supor de 2 a 10;
@@ -94,12 +90,33 @@ public class WorkController implements Initializable {
         int High = 10;
         int numeroProdutos = r.nextInt(High-Low) + Low;
         
+        System.out.println("       --> Criaste " + numeroProdutos + " produtos");
+        
+        //Criar uma FactLinha para cada Produto:
         for (int i = 0; i <numeroProdutos ; i++){
+            
+            int targetDesigStringLength = 20;
             int produtoID = Math.abs(random.nextInt()) + 1;
+            
+            //generation of designacao
+            for (int j = 0; j < targetDesigStringLength; j++) {
+                int randomLimitedInt = leftLimit + (int) 
+                  (random.nextFloat() * (rightLimit - leftLimit + 1));
+                buffer.append((char) randomLimitedInt);
+            }
+            String designacao = buffer.toString();
+
+
         }
-         System.out.println("Criaste " + numeroProdutos + " produtos");
 
         
+        //
+        
+        
+        sql = "COMMIT";
+        dbc.createSettingQuery(sql);
+        System.out.println("Transaction Ended");
+            
     }
     public void update(){
         //TODO
