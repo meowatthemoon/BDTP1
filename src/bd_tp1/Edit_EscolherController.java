@@ -21,6 +21,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -34,6 +35,8 @@ public class Edit_EscolherController implements Initializable {
 
     @FXML
     GridPane gridPane;
+    @FXML 
+    ChoiceBox CBIsolLevel;
 
     @FXML
     private void handleActioVoltar(ActionEvent event) {
@@ -51,6 +54,18 @@ public class Edit_EscolherController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        
+        String[] isolLevel = new String[5];
+        
+        isolLevel[0]="READ UNCOMMITTED";
+        isolLevel[1]="READ COMMITTED";
+        isolLevel[2]="REPEATABLE READ";
+        isolLevel[2]="READ_COMMITTED_SNAPSHOT";
+        isolLevel[3]="SERIALIZABLE";
+        isolLevel[4]="This is an error and should cause the transaction to abort";
+        CBIsolLevel.getItems().addAll((Object[]) isolLevel);
+        CBIsolLevel.getSelectionModel().select(1);
+        
         ResultSet facturas = new databaseConnection().createQuery("Select * from Factura");
         try {
             gridPane.add(new Label("Factura ID"), 0, 0);
