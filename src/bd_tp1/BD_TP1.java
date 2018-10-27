@@ -11,10 +11,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- *
- * @author Andre
- */
+
+
+
 public class BD_TP1 extends Application {
     
     @Override
