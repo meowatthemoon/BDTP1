@@ -111,6 +111,15 @@ public class WorkController implements Initializable {
             int quantidade = random.nextInt(99999999) + 1;
             
             System.out.println("        Designacao: " + designacao + " Preço: " + preco);
+            
+            //setup SQL
+            /*sql = "BEGIN TRANSACTION";
+            dbc.createSettingQuery(sql);
+            System.out.println("Transaction Begun");*/
+            sql = "INSERT INTO FactLinha VALUES (" + factID + "," + produtoID + ",'" + designacao + "'," + preco + "," + quantidade + ")";
+            System.out.println(sql);
+            System.out.println(dbc.createModificationQuery(sql));
+
         }
 
         
