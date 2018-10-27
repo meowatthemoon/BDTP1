@@ -108,6 +108,10 @@ public class WorkController implements Initializable {
         ResultSet rs = dbc.createQuery(sql);
         System.out.println(rs.toString());
         
+        System.out.println(dbc.createModificationQuery(sql));
+        sql = "COMMIT";
+        dbc.createSettingQuery(sql);
+        System.out.println("Transaction Ended");
     }
     public void update(){
         //TODO
