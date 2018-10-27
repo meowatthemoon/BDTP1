@@ -128,6 +128,12 @@ public class WorkController implements Initializable {
         try {
             dbc.createSettingQuery("BEGIN TRANSACTION");
             System.out.println("Transaction Begun: Update");
+            String sql = "SET TRANSACTION ISOLATION LEVEL " + CBIsolLevel.getValue();
+            System.out.println(sql);
+            if(!dbc.createSettingQuery(sql)){
+                System.out.println("Failed to set isolation level");
+                return;
+            }
             //escolher ID aleatório
             ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
             rs.next();
@@ -153,6 +159,12 @@ public class WorkController implements Initializable {
             String sql= "BEGIN TRANSACTION";
             dbc.createSettingQuery(sql);
             System.out.println("Transaction Begun: delete");
+            sql = "SET TRANSACTION ISOLATION LEVEL " + CBIsolLevel.getValue();
+            System.out.println(sql);
+            if(!dbc.createSettingQuery(sql)){
+                System.out.println("Failed to set isolation level");
+                return;
+            }
             //delete operations
             ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
             rs.next();
