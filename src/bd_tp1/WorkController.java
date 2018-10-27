@@ -84,6 +84,30 @@ public class WorkController implements Initializable {
         sql = "COMMIT";
         dbc.createSettingQuery(sql);
         System.out.println("Transaction Ended");
+        
+
+        
+        //Depois de inserimos a Fatura, temos de inserir as suas linhas, assim como os seus produtos.
+        //Vamos primeiro fazer um ciclo de quantos produtos a fatura irá ter, vamos supor de 2 a 10;
+        Random r = new Random();
+        int Low = 2;
+        int High = 10;
+        int numeroProdutos = r.nextInt(High-Low) + Low;
+        
+        for (int i = 0; i <numeroProdutos ; i++){
+            int produtoID = Math.abs(random.nextInt()) + 1;
+        }
+         System.out.println("Criaste " + numeroProdutos + " produtos");
+        
+        /*String sql2 = "INSERT INTO ";
+        System.out.println(sql2);
+        
+        ResultSet rs2 = dbc.createQuery(sql2);
+        System.out.println(rs2.toString());*/
+        
+        ResultSet rs = dbc.createQuery(sql);
+        System.out.println(rs.toString());
+        
     }
     public void update(){
         //TODO
