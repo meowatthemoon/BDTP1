@@ -99,14 +99,18 @@ public class WorkController implements Initializable {
             int produtoID = Math.abs(random.nextInt()) + 1;
             
             //generation of designacao
+            StringBuilder bufferDESIG = new StringBuilder(targetNameStringLength);
             for (int j = 0; j < targetDesigStringLength; j++) {
                 int randomLimitedInt = leftLimit + (int) 
                   (random.nextFloat() * (rightLimit - leftLimit + 1));
-                buffer.append((char) randomLimitedInt);
+                bufferDESIG.append((char) randomLimitedInt);
             }
-            String designacao = buffer.toString();
+            String designacao = bufferDESIG.toString();
 
-
+            int preco = random.nextInt(99999999) + 1;
+            int quantidade = random.nextInt(99999999) + 1;
+            
+            System.out.println("        Designacao: " + designacao + " Preço: " + preco);
         }
 
         
