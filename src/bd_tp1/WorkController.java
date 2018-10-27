@@ -54,9 +54,8 @@ public class WorkController implements Initializable {
         //setup
         String sql;
         Random random = new Random();
-        //factura id deprecated -> is overwritten during transaction
-        int factID = Math.abs(random.nextInt()) + 1;
-        //client id
+        
+        int factID;
         int clientID = Math.abs(random.nextInt()) + 1;
         
         //setup for random string generation
@@ -94,7 +93,7 @@ public class WorkController implements Initializable {
                 factID = 1;
         } catch (SQLException ex){
             System.out.println(ex.getMessage());
-            sql = "COMMIT";
+            sql = "ROLLBACK";
             dbc.createSettingQuery(sql);
             System.out.println("Transaction Ended Failed to attain max ID");
             return;
