@@ -98,20 +98,8 @@ public class WorkController implements Initializable {
             int produtoID = Math.abs(random.nextInt()) + 1;
         }
          System.out.println("Criaste " + numeroProdutos + " produtos");
+
         
-        /*String sql2 = "INSERT INTO ";
-        System.out.println(sql2);
-        
-        ResultSet rs2 = dbc.createQuery(sql2);
-        System.out.println(rs2.toString());*/
-        
-        ResultSet rs = dbc.createQuery(sql);
-        System.out.println(rs.toString());
-        
-        System.out.println(dbc.createModificationQuery(sql));
-        sql = "COMMIT";
-        dbc.createSettingQuery(sql);
-        System.out.println("Transaction Ended");
     }
     public void update(){
         //TODO
