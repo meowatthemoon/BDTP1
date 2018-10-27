@@ -76,9 +76,8 @@ public class databaseConnection {
     public boolean createSettingQuery(String query) {
         try {
             Statement st = con.createStatement();
-            boolean rs = st.execute(query);
-            System.out.println(rs + " in db");
-            return rs;
+            st.execute(query);
+            return true;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;

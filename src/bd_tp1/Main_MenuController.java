@@ -8,6 +8,8 @@ package bd_tp1;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,7 +53,7 @@ public class Main_MenuController implements Initializable {
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            System.out.println(ex.getCause());
         }
     }
     @FXML

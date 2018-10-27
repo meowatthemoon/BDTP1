@@ -70,6 +70,12 @@ public class WorkController implements Initializable {
         //setup SQL
         sql = "BEGIN TRANSACTION";
         dbc.createSettingQuery(sql);
+        sql = "SET TRANSACTION ISOLATION LEVEL " + CBIsolLevel.getValue();
+        System.out.println(sql);
+        if(!dbc.createSettingQuery(sql)){
+            System.out.println("Failed to set isolation level");
+            return;
+        }
         System.out.println("Transaction Begun: insert");
         ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
         try{
@@ -245,12 +251,15 @@ public class WorkController implements Initializable {
         workType[3]="Random";
         CBopType.getItems().addAll((Object[]) workType);
         CBopType.getSelectionModel().select(0);
-        String[] isolLevel = new String[4];
-        isolLevel[0]="Not";
-        isolLevel[1]="Fucking";
-        isolLevel[2]="Implemented";
-        isolLevel[3]="Yet";
+        String[] isolLevel = new String[5];
+        isolLevel[0]="READ UNCOMMITTED";
+        isolLevel[1]="READ COMMITTED";
+        isolLevel[2]="REPEATABLE READ";
+        isolLevel[2]="READ_COMMITTED_SNAPSHOT";
+        isolLevel[3]="SERIALIZABLE";
+        isolLevel[4]="This is an error and should cause the transaction to abort";
         CBIsolLevel.getItems().addAll((Object[]) isolLevel);
+        CBIsolLevel.getSelectionModel().select(1);
     }
 
 }
