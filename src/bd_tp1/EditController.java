@@ -58,7 +58,7 @@ public class EditController implements Initializable {
         //FAZER
     }
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb) {        
         facturaID = editFactura.getFacturaID();
         ResultSet rs = new databaseConnection().createQuery("Select Nome from Factura where FacturaID=" + facturaID);
         try {

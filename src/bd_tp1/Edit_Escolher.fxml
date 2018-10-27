@@ -6,7 +6,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.Edit_EscolherController">
    <bottom>
       <Button mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER" />
@@ -25,4 +24,7 @@
          </content>
       </ScrollPane>
    </center>
+   <top>
+      <ChoiceBox fx:id="CBIsolLevel" prefWidth="150.0" BorderPane.alignment="CENTER" />
+   </top>
 </BorderPane>
