@@ -129,21 +129,25 @@ public class WorkController implements Initializable {
             }
             switch ((String) CBopType.getValue()) {
                 case "Insert":
+                    System.out.println("********************************************INSERT*****************");
                     for (int i = 0; i < num_acoes; i++) {
                         insert();
                     }
                     break;
-                case "Update": 
+                case "Update":
+                    System.out.println("********************************************UPDATE*****************");
                     for (int i = 0; i < num_acoes; i++) {
                         update();
                     }
                     break;
                 case "Delete":
+                    System.out.println("********************************************DELETE******************");
                     for (int i = 0; i < num_acoes; i++) {
                         delete();
                     }
                     break;
                 case "Random":
+                    System.out.println("********************************************RANDOM*****************");                    
                     for (int i = 0; i < num_acoes; i++) {
                         Random r = new Random();
                         System.out.println("acao "+i);
