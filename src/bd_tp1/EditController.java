@@ -91,6 +91,7 @@ public class EditController implements Initializable {
         int index_linha = 1;
         try {
             while (produtos.next()) {
+                System.out.println(index_linha);
                 gridProdutos.add(new Label(produtos.getInt("ProdutoID")+""), 0, index_linha);
                 gridProdutos.add(new Label(produtos.getString("Designacao")), 1, index_linha);
                 gridProdutos.add(new TextField(produtos.getInt("Qtd")+""), 2, index_linha);
@@ -103,6 +104,7 @@ public class EditController implements Initializable {
                     }
                 });
                 gridProdutos.add(b, 3, index_linha);
+                index_linha++;
             }
         } catch (SQLException ex) {
         }
