@@ -38,6 +38,7 @@ public class EditController implements Initializable {
     GridPane gridProdutos;
     @FXML
     TextField txtNome;
+    databaseConnection dbc = new databaseConnection();;
 
     @FXML
     private void handleActioVoltar(ActionEvent event) {
@@ -55,15 +56,18 @@ public class EditController implements Initializable {
 
     @FXML
     private void handleActionUpdateNome(ActionEvent event) {
-        //FAZER
+        String sql;
         //Testar se não está vazio
         if ( txtNome.getText().toString().equals("") ||  txtNome.getText().toString().equals(" ")){
             System.out.println("Não pode ser Nome vazio!");
         }
         else{
             //String no TextView
-            System.out.println(txtNome.getText().toString()); 
+            //System.out.println(txtNome.getText().toString()); 
             //Vamos mudar na Base de Dados, temos a faturaID
+            sql = "Update Factura " + "Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
+            System.out.println(sql);
+            System.out.println(dbc.createModificationQuery(sql));
             
         }
 
