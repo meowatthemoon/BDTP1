@@ -56,7 +56,21 @@ public class EditController implements Initializable {
     @FXML
     private void handleActionUpdateNome(ActionEvent event) {
         //FAZER
+        //Testar se não está vazio
+        if ( txtNome.getText().toString().equals("") ||  txtNome.getText().toString().equals(" ")){
+            System.out.println("Não pode ser Nome vazio!");
+        }
+        else{
+            //String no TextView
+            System.out.println(txtNome.getText().toString()); 
+            //Vamos mudar na Base de Dados, temos a faturaID
+            
+        }
+
+    
     }
+    
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
         facturaID = editFactura.getFacturaID();
