@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 
 /**
  *
@@ -23,11 +24,18 @@ public class WorkThread extends Thread {
     private databaseConnection dbc;
     private String isolationLevel;
     private Button btnWork;
-    public WorkThread(int num_acoes,String type,String isolationLevel,Button btnWork){
+    private Button btnVoltar;
+    private ChoiceBox CBopType;
+    ChoiceBox CBIsolLevel;
+    
+    public WorkThread(int num_acoes,String type,String isolationLevel,Button btnWork, Button btnVoltar, ChoiceBox CBopType, ChoiceBox CBIsolLevel){
         this.num_acoes=num_acoes;
         this.type=type;
         this.isolationLevel=isolationLevel;
         this.btnWork=btnWork;
+        this.btnVoltar = btnVoltar;
+        this.CBIsolLevel = CBIsolLevel;
+        this.CBopType = CBopType;
         dbc = new databaseConnection();
     }
     public void run(){
@@ -79,6 +87,9 @@ public class WorkThread extends Thread {
                         @Override
                         public void run() {
                             btnWork.setDisable(false);
+                            btnVoltar.setDisable(false);
+                            CBopType.setDisable(false);
+                            CBIsolLevel.setDisable(false);
                         }
                     });
     }

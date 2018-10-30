@@ -38,7 +38,7 @@
             <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
          </rowConstraints>
       </GridPane>
-      <Button alignment="BOTTOM_LEFT" layoutX="253.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" />
+      <Button fx:id="btnVoltar" alignment="BOTTOM_LEFT" layoutX="253.0" layoutY="161.0" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" />
       <ChoiceBox fx:id="CBopType" layoutX="14.0" layoutY="45.0" prefWidth="150.0" />
       <ChoiceBox fx:id="CBIsolLevel" layoutX="14.0" layoutY="75.0" prefWidth="150.0" />
       <Label layoutX="173.0" layoutY="49.0" text="Label" />

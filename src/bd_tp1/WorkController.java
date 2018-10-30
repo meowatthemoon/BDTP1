@@ -43,6 +43,8 @@ public class WorkController implements Initializable {
     ChoiceBox CBIsolLevel;
     @FXML
     Button btnWork;
+    @FXML
+    Button btnVoltar;
     
     @FXML
     private void handleActioWork(ActionEvent event) {
@@ -54,7 +56,10 @@ public class WorkController implements Initializable {
                 return;
             }
             btnWork.setDisable(true);
-            new WorkThread(num_acoes,(String) CBopType.getValue(),(String)CBIsolLevel.getValue(),btnWork).start();
+            btnVoltar.setDisable(true);
+            CBopType.setDisable(true);
+            CBIsolLevel.setDisable(true);
+            new WorkThread(num_acoes,(String) CBopType.getValue(),(String)CBIsolLevel.getValue(),btnWork, btnVoltar, CBopType, CBIsolLevel).start();
         } catch (Exception e) {//Se não for um numero
             txtNumero.setText("");
         }
