@@ -20,7 +20,7 @@
                </GridPane.margin>
             </Label>
             <TextField fx:id="txtNumero" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#handleActioWork" GridPane.columnIndex="1" />
-            <Button alignment="TOP_CENTER" mnemonicParsing="false" onAction="#handleActioWork" text="(fazer)" GridPane.columnIndex="2">
+            <Button fx:id="btnWork" alignment="TOP_CENTER" mnemonicParsing="false" onAction="#handleActioWork" text="(fazer)" GridPane.columnIndex="2">
                <GridPane.margin>
                   <Insets left="10.0" />
                </GridPane.margin>
