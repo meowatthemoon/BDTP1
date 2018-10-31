@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 
 /**
  *
@@ -26,9 +28,10 @@ public class WorkThread extends Thread {
     private Button btnWork;
     private Button btnVoltar;
     private ChoiceBox CBopType;
-    ChoiceBox CBIsolLevel;
+    private ChoiceBox CBIsolLevel;
+    private ProgressBar PBtransProgress;
     
-    public WorkThread(int num_acoes,String type,String isolationLevel,Button btnWork, Button btnVoltar, ChoiceBox CBopType, ChoiceBox CBIsolLevel){
+    public WorkThread(int num_acoes,String type,String isolationLevel,Button btnWork, Button btnVoltar, ChoiceBox CBopType, ChoiceBox CBIsolLevel, ProgressBar PBtransProgress){
         this.num_acoes=num_acoes;
         this.type=type;
         this.isolationLevel=isolationLevel;
@@ -36,26 +39,35 @@ public class WorkThread extends Thread {
         this.btnVoltar = btnVoltar;
         this.CBIsolLevel = CBIsolLevel;
         this.CBopType = CBopType;
+        this.PBtransProgress = PBtransProgress;
         dbc = new databaseConnection();
     }
     public void run(){
+        PBtransProgress.setDisable(false);
+        int count=0;
         switch (type) {
             case "Insert":
                 System.out.println("********************************************INSERT*****************");
                 for (int i = 0; i < num_acoes; i++) {
                     insert();
+                    count++;
+                    PBtransProgress.setProgress((double) count/num_acoes);
                 }
                 break;
             case "Update":
                 System.out.println("********************************************UPDATE*****************");
                 for (int i = 0; i < num_acoes; i++) {
                     update();
+                    count++;
+                    PBtransProgress.setProgress((double) count/num_acoes);
                 }
                 break;
             case "Delete":
                 System.out.println("********************************************DELETE******************");
                 for (int i = 0; i < num_acoes; i++) {
                     delete();
+                    count++;
+                    PBtransProgress.setProgress((double) count/num_acoes);
                 }
                 break;
             case "Random":
@@ -77,8 +89,10 @@ public class WorkThread extends Thread {
                         System.out.println("delete"+i);
                         delete();
                     }
+                    count++;
+                    PBtransProgress.setProgress((double) count/num_acoes);
                 }
-                break;  
+                break;
             default:
                 System.out.println("it bork");
                 break;
@@ -90,6 +104,8 @@ public class WorkThread extends Thread {
                             btnVoltar.setDisable(false);
                             CBopType.setDisable(false);
                             CBIsolLevel.setDisable(false);
+                            PBtransProgress.setProgress((double) 0);
+                            PBtransProgress.setDisable(true);
                         }
                     });
     }

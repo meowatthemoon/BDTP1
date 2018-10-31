@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.WorkController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="381.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.WorkController">
    <children>
       <GridPane>
          <children>
@@ -43,5 +43,6 @@
       <ChoiceBox fx:id="CBIsolLevel" layoutX="14.0" layoutY="75.0" prefWidth="150.0" />
       <Label layoutX="173.0" layoutY="49.0" text="Label" />
       <Label layoutX="173.0" layoutY="79.0" text="Label" />
+      <ProgressBar fx:id="PBtransProgress" layoutX="14.0" layoutY="121.0" prefHeight="23.0" prefWidth="232.0" progress="0.0" />
    </children>
 </Pane>

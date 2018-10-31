@@ -38,8 +38,18 @@ public class EditController implements Initializable {
     GridPane gridProdutos;
     @FXML
     TextField txtNome;
-    databaseConnection dbc = new databaseConnection();;
+    databaseConnection dbc = new databaseConnection();
 
+    //função para ir buscar elemento segundo colunas e linhas da gridpane.
+    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
+    for (Node node : gridPane.getChildren()) {
+        if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+            return node;
+        }
+    }
+    return null;
+    }
+    
     @FXML
     private void handleActioVoltar(ActionEvent event) {
         Parent window3; //we need to load the layout that we want to swap
@@ -69,9 +79,7 @@ public class EditController implements Initializable {
             System.out.println(sql);
             System.out.println(dbc.createModificationQuery(sql));
             
-        }
-
-    
+        }   
     }
     
     
@@ -101,6 +109,9 @@ public class EditController implements Initializable {
                     public void handle(ActionEvent event) {
                         System.out.println("FAZER: UPDATE QTD");
                         //FAZER
+                        String sql;
+                        //Obter o textfield da grid... :o
+
                     }
                 });
                 gridProdutos.add(b, 3, index_linha);
@@ -109,5 +120,8 @@ public class EditController implements Initializable {
         } catch (SQLException ex) {
         }
     }
+    
+
+
 
 }

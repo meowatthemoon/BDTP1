@@ -23,6 +23,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -45,6 +47,8 @@ public class WorkController implements Initializable {
     Button btnWork;
     @FXML
     Button btnVoltar;
+    @FXML
+    ProgressBar PBtransProgress;
     
     @FXML
     private void handleActioWork(ActionEvent event) {
@@ -59,7 +63,7 @@ public class WorkController implements Initializable {
             btnVoltar.setDisable(true);
             CBopType.setDisable(true);
             CBIsolLevel.setDisable(true);
-            new WorkThread(num_acoes,(String) CBopType.getValue(),(String)CBIsolLevel.getValue(),btnWork, btnVoltar, CBopType, CBIsolLevel).start();
+            new WorkThread(num_acoes,(String) CBopType.getValue(),(String)CBIsolLevel.getValue(),btnWork, btnVoltar, CBopType, CBIsolLevel, PBtransProgress).start();
         } catch (Exception e) {//Se não for um numero
             txtNumero.setText("");
         }
@@ -81,6 +85,7 @@ public class WorkController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        PBtransProgress.setDisable(true);
         String[] workType = new String[4];
         workType[0]="Insert";
         workType[1]="Update";
