@@ -48,22 +48,23 @@ public class WorkController implements Initializable {
     @FXML
     Button btnVoltar;
     @FXML
-    ProgressBar PBtransProgress;
+     ProgressBar PBtransProgress;
+    static boolean[] disabled={false};
+    static int num_acoes=0;
     
     @FXML
     private void handleActioWork(ActionEvent event) {
         try {
-            int num_acoes = Integer.parseInt(txtNumero.getText());
+            num_acoes = Integer.parseInt(txtNumero.getText());
             //Se numero for <1
             if (num_acoes < 1) {
                 txtNumero.setText("");
                 return;
             }
             btnWork.setDisable(true);
-            btnVoltar.setDisable(true);
             CBopType.setDisable(true);
             CBIsolLevel.setDisable(true);
-            new WorkThread(num_acoes,(String) CBopType.getValue(),(String)CBIsolLevel.getValue(),btnWork, btnVoltar, CBopType, CBIsolLevel, PBtransProgress).start();
+            new WorkThread(num_acoes,(String) CBopType.getValue(),(String)CBIsolLevel.getValue(),btnWork, CBopType, CBIsolLevel, PBtransProgress,disabled).start();
         } catch (Exception e) {//Se não for um numero
             txtNumero.setText("");
         }
@@ -102,6 +103,11 @@ public class WorkController implements Initializable {
         isolLevel[4]="This is an error and should cause the transaction to abort";
         CBIsolLevel.getItems().addAll((Object[]) isolLevel);
         CBIsolLevel.getSelectionModel().select(1);
+        
+        btnWork.setDisable(disabled[0]);
+        if(disabled[0]==true)
+            new WorkThread(num_acoes,(String) CBopType.getValue(),(String)CBIsolLevel.getValue(),btnWork, CBopType, CBIsolLevel, PBtransProgress,disabled).start();
+        
     }
 
 }

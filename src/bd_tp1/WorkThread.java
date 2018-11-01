@@ -26,23 +26,37 @@ public class WorkThread extends Thread {
     private databaseConnection dbc;
     private String isolationLevel;
     private Button btnWork;
-    private Button btnVoltar;
     private ChoiceBox CBopType;
     private ChoiceBox CBIsolLevel;
-    private ProgressBar PBtransProgress;
+    private static ProgressBar PBtransProgress;
+    private boolean[] disabled;
     
-    public WorkThread(int num_acoes,String type,String isolationLevel,Button btnWork, Button btnVoltar, ChoiceBox CBopType, ChoiceBox CBIsolLevel, ProgressBar PBtransProgress){
+    
+    private static double progress;
+    private static boolean running;
+    
+    public WorkThread(int num_acoes,String type,String isolationLevel,Button btnWork, ChoiceBox CBopType, ChoiceBox CBIsolLevel, ProgressBar PBtransProgress,boolean[] disabled){
         this.num_acoes=num_acoes;
         this.type=type;
         this.isolationLevel=isolationLevel;
         this.btnWork=btnWork;
-        this.btnVoltar = btnVoltar;
         this.CBIsolLevel = CBIsolLevel;
         this.CBopType = CBopType;
         this.PBtransProgress = PBtransProgress;
+        this.disabled=disabled;
         dbc = new databaseConnection();
     }
+    private static void setProgress(double progress) {
+        PBtransProgress.setProgress(progress);
+    }
     public void run(){
+        if (running) {
+            PBtransProgress.setProgress(progress);
+            return;
+        }
+        running = true;
+        
+        disabled[0]=true;
         PBtransProgress.setDisable(false);
         int count=0;
         switch (type) {
@@ -51,7 +65,8 @@ public class WorkThread extends Thread {
                 for (int i = 0; i < num_acoes; i++) {
                     insert();
                     count++;
-                    PBtransProgress.setProgress((double) count/num_acoes);
+                    progress = (double) count/num_acoes;
+                    setProgress(progress);
                 }
                 break;
             case "Update":
@@ -59,7 +74,8 @@ public class WorkThread extends Thread {
                 for (int i = 0; i < num_acoes; i++) {
                     update();
                     count++;
-                    PBtransProgress.setProgress((double) count/num_acoes);
+                    progress = (double) count/num_acoes;
+                    setProgress(progress);
                 }
                 break;
             case "Delete":
@@ -67,7 +83,8 @@ public class WorkThread extends Thread {
                 for (int i = 0; i < num_acoes; i++) {
                     delete();
                     count++;
-                    PBtransProgress.setProgress((double) count/num_acoes);
+                    progress = (double) count/num_acoes;
+                    setProgress(progress);
                 }
                 break;
             case "Random":
@@ -90,7 +107,8 @@ public class WorkThread extends Thread {
                         delete();
                     }
                     count++;
-                    PBtransProgress.setProgress((double) count/num_acoes);
+                    progress = (double) count/num_acoes;
+                    setProgress(progress);
                 }
                 break;
             default:
@@ -101,13 +119,15 @@ public class WorkThread extends Thread {
                         @Override
                         public void run() {
                             btnWork.setDisable(false);
-                            btnVoltar.setDisable(false);
                             CBopType.setDisable(false);
                             CBIsolLevel.setDisable(false);
-                            PBtransProgress.setProgress((double) 0);
+                            progress = (double) 0;
+                            setProgress(progress);
                             PBtransProgress.setDisable(true);
                         }
                     });
+        disabled[0]=false;
+        running = false;
     }
     public String randomString(int length){
         int leftLimit = 65; // letter 'a'
