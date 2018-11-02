@@ -166,17 +166,15 @@ public class WorkThread extends Thread {
         //testing purposes
         System.out.println(nome + "   " + address);
         
-        //setup SQL
+        //Log
         dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','inicio',GetDate(),'"+ref+"')");
-        sql = "BEGIN TRANSACTION";
-        dbc.createSettingQuery(sql);
-        sql = "SET TRANSACTION ISOLATION LEVEL " + isolationLevel;
-        System.out.println(sql);
-        if(!dbc.createSettingQuery(sql)){
-            System.out.println("Failed to set isolation level");
+        //Begin Transaction
+        dbc.createSettingQuery("BEGIN TRANSACTION");
+        //Isolation Level
+        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + isolationLevel)){
             return;
         }
-        System.out.println("Transaction Begun: insert");
+        //Inserir Fatura
         ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
         try{
             if(rs.next())
@@ -185,16 +183,17 @@ public class WorkThread extends Thread {
                 factID = 1;
         } catch (SQLException ex){
             System.out.println(ex.getMessage());
-            sql = "ROLLBACK";
-            dbc.createSettingQuery(sql);
+            dbc.createSettingQuery("ROLLBACK");
             dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-rollback',GetDate(),'"+ref+"')");
             
             System.out.println("Transaction Ended Failed to attain max ID");
             return;
         }
-        sql = "INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')";
-        System.out.println(sql);
-        System.out.println(dbc.createModificationQuery(sql));
+        if(dbc.createModificationQuery("INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')")==-1){
+            dbc.createSettingQuery("ROLLBACK");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-rollback',GetDate(),'"+ref+"')");
+            return;
+        }
                
         
         //Depois de inserimos a Fatura, temos de inserir as suas linhas, assim como os seus produtos.
@@ -203,8 +202,6 @@ public class WorkThread extends Thread {
         int Low = 2;
         int High = 10;
         int numeroProdutos = r.nextInt(High-Low) + Low;
-        
-        System.out.println("       --> Criaste " + numeroProdutos + " produtos");
         
         //Criar uma FactLinha para cada Produto:
         for (int i = 0; i <numeroProdutos ; i++){
@@ -215,14 +212,14 @@ public class WorkThread extends Thread {
             int preco = random.nextInt(99999999) + 1;
             int quantidade = random.nextInt(99999999) + 1;
             
-            System.out.println("        Designacao: " + designacao + " Preço: " + preco);
-            sql = "INSERT INTO FactLinha VALUES (" + factID + "," + produtoID + ",'" + designacao + "'," + preco + "," + quantidade + ")";
-            System.out.println(sql);
-            System.out.println(dbc.createModificationQuery(sql));
+            if(dbc.createModificationQuery("INSERT INTO FactLinha VALUES (" + factID + "," + produtoID + ",'" + designacao + "'," + preco + "," + quantidade + ")")==-1){
+                dbc.createSettingQuery("ROLLBACK");
+                dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-rollback',GetDate(),'"+ref+"')");
+                return;
+            }
 
         }
-        sql = "COMMIT";
-        dbc.createSettingQuery(sql);
+        dbc.createSettingQuery("COMMIT");
         dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-commit',GetDate(),'"+ref+"')");
         System.out.println("Transaction Ended");
             
@@ -239,16 +236,19 @@ public class WorkThread extends Thread {
             System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
             return;
         }
+        
+        //Log
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','inicio',GetDate(),'"+ref+"')");
+        //Begin Transaction
+        dbc.createSettingQuery("BEGIN TRANSACTION");
+        //Isolation Level
+        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + isolationLevel)){
+            System.out.println("Failed to set isolation level");
+            dbc.createSettingQuery("ROLLBACK");
+            return;
+        }
         try {
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','inicio',GetDate(),'"+ref+"')");
-            dbc.createSettingQuery("BEGIN TRANSACTION");
-            System.out.println("Transaction Begun: Update");
-            String sql = "SET TRANSACTION ISOLATION LEVEL " + isolationLevel;
-            System.out.println(sql);
-            if(!dbc.createSettingQuery(sql)){
-                System.out.println("Failed to set isolation level");
-                return;
-            }
+            
             //escolher ID aleatório
             ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
             rs.next();
@@ -283,18 +283,17 @@ public class WorkThread extends Thread {
             System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
             return;
         }
+        //Log
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','inicio',GetDate(),'"+ref+"')");
+        //Begin Transaction
+        dbc.createSettingQuery("BEGIN TRANSACTION");
+        //Isolation Level
+        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + isolationLevel)){
+            dbc.createSettingQuery("ROLLBACK");
+            System.out.println("Failed to set isolation level");
+            return;
+        }
         try {
-            
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','inicio',GetDate(),'"+ref+"')");
-            String sql= "BEGIN TRANSACTION";
-            dbc.createSettingQuery(sql);
-            System.out.println("Transaction Begun: delete");
-            sql = "SET TRANSACTION ISOLATION LEVEL " + isolationLevel;
-            System.out.println(sql);
-            if(!dbc.createSettingQuery(sql)){
-                System.out.println("Failed to set isolation level");
-                return;
-            }
             //delete operations
             ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
             rs.next();
@@ -303,10 +302,8 @@ public class WorkThread extends Thread {
             int facturaID = r.nextInt(maxID) + 1;
             dbc.createQuery("delete from FactLinha where FacturaID="+facturaID);
             dbc.createQuery("delete from Factura where FacturaID="+facturaID);
-            System.out.println("elimnei "+facturaID+"?");
             //commit transaction
-            sql = "COMMIT";
-            dbc.createSettingQuery(sql);
+            dbc.createSettingQuery("COMMIT");
             dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','fim-commit',GetDate(),'"+ref+"')");
             System.out.println("Transaction Ended: delete");
         } catch (SQLException ex) {
