@@ -14,17 +14,6 @@
       <Button mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER" />
    </bottom>
    <center>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
-         <content>
-            <GridPane fx:id="gridLogs" maxHeight="-Infinity" maxWidth="-Infinity">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-         </content>
-      </ScrollPane>
+      <TableView fx:id="TVLog" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
    </center>
 </BorderPane>
