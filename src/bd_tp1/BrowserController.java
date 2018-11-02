@@ -26,10 +26,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -45,6 +47,10 @@ public class BrowserController implements Initializable {
     TableView TVfatura;
     @FXML
     TableView TVfactLinha;
+    @FXML
+    TextField TAstartId;
+    @FXML
+    ChoiceBox CBammount;
     
     private databaseConnection dbc = new databaseConnection();
     int facturaID_selecionada;
@@ -53,7 +59,11 @@ public class BrowserController implements Initializable {
 
     @FXML
     private void handleActioRefresh(ActionEvent event) {
-        mostraFacturas();
+        try{
+            mostraFacturas(Integer.valueOf(TAstartId.getText()), Integer.valueOf(CBammount.getValue().toString()));
+        } catch(NumberFormatException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     @FXML
@@ -79,11 +89,11 @@ public class BrowserController implements Initializable {
         mostraLinhas(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1,TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
     }
 
-    public void mostraFacturas() {
+    public void mostraFacturas(int startId, int ammount) {
         data = FXCollections.observableArrayList();
         try{
             
-            String SQL = "SELECT TOP(50) * FROM Factura";
+            String SQL = "SELECT * FROM Factura ORDER BY FacturaID OFFSET " + startId + " ROWS FETCH NEXT " + ammount + " ROWS ONLY";
             //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
 
@@ -177,7 +187,13 @@ public class BrowserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        mostraFacturas();
+        String[] ammounts = new String[3];
+        ammounts[0] = "50";
+        ammounts[1] = "250";
+        ammounts[2] = "500";
+        CBammount.getItems().addAll((Object[]) ammounts);
+        CBammount.getSelectionModel().select(0);
+        TAstartId.setText("0");
         /*facturaID_selecionada = 0;//pk na definicao da tabela os IDS teem de ser >=1
 
         timer = new Thread() {

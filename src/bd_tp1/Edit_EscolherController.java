@@ -29,6 +29,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -46,6 +48,8 @@ public class Edit_EscolherController implements Initializable {
     ChoiceBox CBIsolLevel;
     @FXML
     TableView TVfatura;
+    @FXML
+    TextField TAstartId;
     
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
@@ -65,46 +69,36 @@ public class Edit_EscolherController implements Initializable {
         } catch (IOException ex) {
         }
     }
-    
+    @FXML
+    private void handleActionRefresh(ActionEvent event){
+        try{
+            refresh(Integer.parseInt(TAstartId.getText()));
+        } catch(NumberFormatException ex){
+            System.out.println(ex.getMessage());
+        }
+    }
     @FXML
     private void handleActionSelectionar(ActionEvent event){
-
-        
-        new editFactura(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1, TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
-                        Parent window3; //we need to load the layout that we want to swap
-                        try {
-                            window3 = FXMLLoader.load(getClass().getResource("Edit.fxml"));
-                            Scene newScene; //then we create a new scene with our new layout
-                            newScene = new Scene(window3);
-                            Stage mainWindow; //Here is the magic. We get the reference to main Stage.
-                            mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                            mainWindow.setScene(newScene); //here we simply set the new scene
-                        } catch (IOException ex) {
-                        }
-        
-      
+        //new editFactura(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1, TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
+        Parent window3; //we need to load the layout that we want to swap
+        try {
+            window3 = FXMLLoader.load(getClass().getResource("Edit.fxml"));
+            Scene newScene; //then we create a new scene with our new layout
+            newScene = new Scene(window3);
+            Stage mainWindow; //Here is the magic. We get the reference to main Stage.
+            mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            mainWindow.setScene(newScene); //here we simply set the new scene
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        
-        String[] isolLevel = new String[5];
-        
-        isolLevel[0]="READ UNCOMMITTED";
-        isolLevel[1]="READ COMMITTED";
-        isolLevel[2]="REPEATABLE READ";
-        isolLevel[2]="READ_COMMITTED_SNAPSHOT";
-        isolLevel[3]="SERIALIZABLE";
-        isolLevel[4]="This is an error and should cause the transaction to abort";
-        CBIsolLevel.getItems().addAll((Object[]) isolLevel);
-        CBIsolLevel.getSelectionModel().select(1);
-        
-        
-       
+    
+    private void refresh(int startID){
+        TVfatura.getItems().clear();
+        TVfatura.getColumns().clear();
         data = FXCollections.observableArrayList();
         try{
-            
-            String SQL = "SELECT TOP(50) * FROM Factura";
+            String SQL = "SELECT * FROM Factura ORDER BY FacturaID OFFSET " + startID + " ROWS FETCH NEXT 50 ROWS ONLY";
             //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
 
@@ -146,12 +140,21 @@ public class Edit_EscolherController implements Initializable {
               e.printStackTrace();
               System.out.println("Error on Building Data");             
           }
+    }
     
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        String[] isolLevel = new String[5];
         
-        
-        
-        
-       
+        isolLevel[0]="READ UNCOMMITTED";
+        isolLevel[1]="READ COMMITTED";
+        isolLevel[2]="REPEATABLE READ";
+        isolLevel[2]="READ_COMMITTED_SNAPSHOT";
+        isolLevel[3]="SERIALIZABLE";
+        isolLevel[4]="This is an error and should cause the transaction to abort";
+        CBIsolLevel.getItems().addAll((Object[]) isolLevel);
+        CBIsolLevel.getSelectionModel().select(1);
+        TAstartId.setText("0");
     }
 
 }

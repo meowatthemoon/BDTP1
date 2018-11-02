@@ -7,31 +7,48 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="bd_tp1.BrowserController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.BrowserController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
   </columnConstraints>
   <rowConstraints>
-    <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="32.0" vgrow="NEVER" />
+    <RowConstraints vgrow="NEVER" />
     <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="368.0" vgrow="SOMETIMES" />
+      <RowConstraints percentHeight="9.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button fx:id="BTNvoltar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
       <TableView fx:id="TVfatura" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
       <TableView fx:id="TVfactLinha" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <GridPane>
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="TAstartId" promptText="Example: 150" GridPane.columnIndex="1" />
+            <Label text="Starting from ID:" GridPane.halignment="RIGHT" />
+            <Label text="Ammount:" GridPane.columnIndex="2" />
+         </children>
+      </GridPane>
+      <Button fx:id="BTNmostraLinhas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionMostrarLinhas" text="Mostrar Linhas" GridPane.rowIndex="2" />
+      <GridPane GridPane.columnIndex="1">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="BTNrefresh" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" GridPane.halignment="CENTER" />
-            <Button fx:id="BTNmostraLinhas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionMostrarLinhas" text="Mostrar Linhas" GridPane.columnIndex="1" />
+            <ChoiceBox fx:id="CBammount" prefWidth="150.0" />
+            <Button fx:id="BTNrefresh" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
          </children>
       </GridPane>
+      <Button fx:id="BTNvoltar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
 </GridPane>
