@@ -73,6 +73,8 @@ public class BrowserController implements Initializable {
     
     @FXML
     private void handleActionMostrarLinhas(ActionEvent event){
+        TVfactLinha.getItems().clear();
+        TVfactLinha.getColumns().clear();
         mostraLinhas(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1,TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
     }
 
