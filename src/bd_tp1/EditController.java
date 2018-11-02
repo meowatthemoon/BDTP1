@@ -60,6 +60,7 @@ public class EditController implements Initializable {
             Stage mainWindow; //Here is the magic. We get the reference to main Stage.
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
+            mainWindow.setTitle("Edit");            
         } catch (IOException ex) {
         }
     }
