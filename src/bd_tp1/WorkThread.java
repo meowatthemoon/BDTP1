@@ -142,6 +142,17 @@ public class WorkThread extends Thread {
         return bufferDESIG.toString();
     }
     public void insert(){
+        //referência da transação para o log
+        String ref;
+        try {
+            ResultSet date=dbc.createQuery("select GetDate()");
+            date.next();
+            ref = "G1-"+date.getString(1);
+            System.out.println("REFERÊNCIA : "+ref);
+        } catch (SQLException ex) {
+            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+            return;
+        }
         //setup
         String sql;
         Random random = new Random();
@@ -156,6 +167,7 @@ public class WorkThread extends Thread {
         System.out.println(nome + "   " + address);
         
         //setup SQL
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','inicio',GetDate(),'"+ref+"')");
         sql = "BEGIN TRANSACTION";
         dbc.createSettingQuery(sql);
         sql = "SET TRANSACTION ISOLATION LEVEL " + isolationLevel;
@@ -175,6 +187,8 @@ public class WorkThread extends Thread {
             System.out.println(ex.getMessage());
             sql = "ROLLBACK";
             dbc.createSettingQuery(sql);
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-rollback',GetDate(),'"+ref+"')");
+            
             System.out.println("Transaction Ended Failed to attain max ID");
             return;
         }
@@ -209,11 +223,24 @@ public class WorkThread extends Thread {
         }
         sql = "COMMIT";
         dbc.createSettingQuery(sql);
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-commit',GetDate(),'"+ref+"')");
         System.out.println("Transaction Ended");
             
     }
     public void update(){
+        //referência da transação para o log
+        String ref;
         try {
+            ResultSet date=dbc.createQuery("select GetDate()");
+            date.next();
+            ref = "G1-"+date.getString(1);
+            System.out.println("REFERÊNCIA : "+ref);
+        } catch (SQLException ex) {
+            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+            return;
+        }
+        try {
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','inicio',GetDate(),'"+ref+"')");
             dbc.createSettingQuery("BEGIN TRANSACTION");
             System.out.println("Transaction Begun: Update");
             String sql = "SET TRANSACTION ISOLATION LEVEL " + isolationLevel;
@@ -237,13 +264,28 @@ public class WorkThread extends Thread {
             dbc.createQuery("update Factura set ClienteID="+clienteID+",Nome='"+nome+"',Morada='"+morada+"' where FacturaID="+facturaID);
             //commit transaction
             dbc.createSettingQuery("COMMIT");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','fim-commit',GetDate(),'"+ref+"')");
+            
             System.out.println("Transaction Ended");
         } catch (SQLException ex) {
             Logger.getLogger(WorkController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     public void delete(){ //This must be wrapped into a whole transaction
+        //referência da transação para o log
+        String ref;
         try {
+            ResultSet date=dbc.createQuery("select GetDate()");
+            date.next();
+            ref = "G1-"+date.getString(1);
+            System.out.println("REFERÊNCIA : "+ref);
+        } catch (SQLException ex) {
+            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+            return;
+        }
+        try {
+            
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','inicio',GetDate(),'"+ref+"')");
             String sql= "BEGIN TRANSACTION";
             dbc.createSettingQuery(sql);
             System.out.println("Transaction Begun: delete");
@@ -265,6 +307,7 @@ public class WorkThread extends Thread {
             //commit transaction
             sql = "COMMIT";
             dbc.createSettingQuery(sql);
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','fim-commit',GetDate(),'"+ref+"')");
             System.out.println("Transaction Ended: delete");
         } catch (SQLException ex) {
             Logger.getLogger(WorkController.class.getName()).log(Level.SEVERE, null, ex);
