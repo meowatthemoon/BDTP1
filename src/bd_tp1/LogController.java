@@ -68,16 +68,17 @@ public class LogController implements Initializable {
             while (linhas.next()) {
                 gridLogs.add(new Label(linhas.getInt("NumReg") + ""), 0, index_linha);
                 gridLogs.add(new Label(linhas.getString("EventType")), 1, index_linha);
-                gridLogs.add(new Label(linhas.getString("Objeto") + ""), 2, index_linha);
+                gridLogs.add(new Label(linhas.getString("Objecto") + ""), 2, index_linha);
                 gridLogs.add(new Label(linhas.getString("Valor") + ""), 3, index_linha);
                 gridLogs.add(new Label(linhas.getString("Referencia") + ""), 4, index_linha);
                 gridLogs.add(new Label(linhas.getString("UserID") + ""), 5, index_linha);
-                gridLogs.add(new Label(linhas.getString("TerminalID") + ""), 6, index_linha);
+                gridLogs.add(new Label(linhas.getString("TerminalD") + ""), 6, index_linha);
                 gridLogs.add(new Label(linhas.getString("TerminalName") + ""), 7, index_linha);
                 gridLogs.add(new Label(linhas.getString("DCriacao") + ""), 8, index_linha);
                 index_linha++;
             }
         } catch (SQLException ex) {
+            System.out.println(ex.toString());
         }
 
     }

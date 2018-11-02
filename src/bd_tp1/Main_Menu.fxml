@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -19,21 +21,33 @@
     <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioEdit" text="Edit" textAlignment="CENTER">
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioEdit" style="-fx-border-color: BLACK; -fx-border-width: 2;" text="Edit" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font size="60.0" />
-         </font></Button>
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="292.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioWork" prefHeight="292.0" prefWidth="330.0" text="Work" GridPane.columnIndex="1">
+         </font>
+         <effect>
+            <ColorAdjust brightness="-0.5" contrast="1.0" hue="0.9" />
+         </effect></Button>
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="292.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioWork" prefHeight="292.0" prefWidth="330.0" style="-fx-border-color: BLACK; -fx-border-width: 2;" text="Work" textFill="WHITE" GridPane.columnIndex="1">
          <font>
             <Font size="60.0" />
-         </font></Button>
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioBrowser" prefHeight="300.0" prefWidth="360.0" text="Browser " GridPane.rowIndex="1">
+         </font>
+         <effect>
+            <ColorAdjust brightness="-0.5" contrast="1.0" hue="1.0" />
+         </effect></Button>
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioBrowser" prefHeight="300.0" prefWidth="360.0" style="-fx-border-color: BLACK; -fx-border-width: 2;" text="Browser " textFill="WHITE" GridPane.rowIndex="1">
          <font>
             <Font size="60.0" />
-         </font></Button>
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioLog" prefHeight="300.0" prefWidth="356.0" text="Log" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         </font>
+         <effect>
+            <ColorAdjust brightness="-0.5" contrast="1.0" hue="0.78" />
+         </effect></Button>
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioLog" prefHeight="300.0" prefWidth="356.0" style="-fx-border-color: BLACK; -fx-border-width: 2;" text="Log" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <font>
             <Font size="60.0" />
-         </font></Button>
+         </font>
+         <effect>
+            <ColorAdjust brightness="-0.5" contrast="1.0" hue="-0.93" />
+         </effect></Button>
    </children>
 </GridPane>
