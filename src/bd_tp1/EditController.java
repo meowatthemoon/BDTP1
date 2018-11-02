@@ -100,9 +100,11 @@ public class EditController implements Initializable {
         try {
             while (produtos.next()) {
                 System.out.println(index_linha);
-                gridProdutos.add(new Label(produtos.getInt("ProdutoID")+""), 0, index_linha);
+                Label produtoid = new Label(produtos.getInt("ProdutoID")+""); 
+                gridProdutos.add(produtoid, 0, index_linha);
                 gridProdutos.add(new Label(produtos.getString("Designacao")), 1, index_linha);
-                gridProdutos.add(new TextField(produtos.getInt("Qtd")+""), 2, index_linha);
+                TextField txt=new TextField(produtos.getInt("Qtd")+"");
+                gridProdutos.add(txt, 2, index_linha);
                 Button b = new Button("(fazer)");
                 b.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
@@ -110,7 +112,22 @@ public class EditController implements Initializable {
                         System.out.println("FAZER: UPDATE QTD");
                         //FAZER
                         String sql;
-                        //Obter o textfield da grid... :o
+                        String test=txt.getText();
+                        
+                        //Testar se é inteiro
+                        try{
+                            int numero = Integer.parseInt(test);
+                            
+                            String quantidade = Integer.toString(numero);
+                            
+                            sql = "Update FactLinha " + "Set Qtd = '" + quantidade + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
+                            System.out.println(sql);
+                            System.out.println(dbc.createModificationQuery(sql));
+                            
+                        }
+                        catch(Exception ex){
+                                System.out.println("Não é inteiro");
+                        }
 
                     }
                 });
