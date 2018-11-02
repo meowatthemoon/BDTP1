@@ -1,48 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.BrowserController">
-   <bottom>
-      <Button mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER" />
-   </bottom>
-   <top>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
-         <top>
-            <Button mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" BorderPane.alignment="CENTER" />
-         </top>
-         <center>
-            <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
-               <content>
-                  <GridPane fx:id="gridFacturas" maxHeight="-Infinity" maxWidth="-Infinity">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
-               </content>
-            </ScrollPane>
-         </center>
-      </BorderPane>
-   </top>
-   <center>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
-         <content>
-            <GridPane fx:id="gridLinhas" maxHeight="-Infinity" maxWidth="-Infinity">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
-              </rowConstraints>
-            </GridPane>
-         </content>
-      </ScrollPane>
-   </center>
-</BorderPane>
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="bd_tp1.BrowserController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="192.0" minHeight="10.0" prefHeight="32.0" vgrow="NEVER" />
+    <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="368.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Button fx:id="BTNvoltar" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+      <TableView fx:id="TVfatura" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+      <TableView fx:id="TVfactLinha" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="BTNrefresh" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" GridPane.halignment="CENTER" />
+            <Button fx:id="BTNmostraLinhas" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionMostrarLinhas" text="Mostrar Linhas" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</GridPane>
