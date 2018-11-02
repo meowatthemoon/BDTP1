@@ -34,9 +34,10 @@ public class Main_MenuController implements Initializable {
             window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
             Scene newScene; //then we create a new scene with our new layout
             newScene = new Scene(window3);
-            Stage mainWindow; //Here is the magic. We get the reference to main Stage.
+            Stage mainWindow; //Here is the magic. We get the reference to main Stage.          
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
+            mainWindow.setTitle("Edit");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -52,6 +53,7 @@ public class Main_MenuController implements Initializable {
             Stage mainWindow; //Here is the magic. We get the reference to main Stage.
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
+            mainWindow.setTitle("Work");
         } catch (IOException ex) {
             System.out.println(ex.getCause());
         }
@@ -67,6 +69,7 @@ public class Main_MenuController implements Initializable {
             Stage mainWindow; //Here is the magic. We get the reference to main Stage.
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
+            mainWindow.setTitle("Browser");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -83,6 +86,7 @@ public class Main_MenuController implements Initializable {
             Stage mainWindow; //Here is the magic. We get the reference to main Stage.
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
+            mainWindow.setTitle("Log");
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="bd_tp1.Main_MenuController">
+<GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.Main_MenuController">
   <columnConstraints>
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
     <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
@@ -15,9 +19,21 @@
     <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioEdit" text="Edit  (Fazer)" />
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioWork" text="Work  (Fazer)" GridPane.columnIndex="1" />
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioBrowser" text="Browser  (Fazer)" GridPane.rowIndex="1" />
-      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioLog" text="Log  (Fazer)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioEdit" text="Edit" textAlignment="CENTER">
+         <font>
+            <Font size="60.0" />
+         </font></Button>
+      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="292.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioWork" prefHeight="292.0" prefWidth="330.0" text="Work" GridPane.columnIndex="1">
+         <font>
+            <Font size="60.0" />
+         </font></Button>
+      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioBrowser" prefHeight="300.0" prefWidth="360.0" text="Browser " GridPane.rowIndex="1">
+         <font>
+            <Font size="60.0" />
+         </font></Button>
+      <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="300.0" minWidth="300.0" mnemonicParsing="false" onAction="#handleActioLog" prefHeight="300.0" prefWidth="356.0" text="Log" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <font>
+            <Font size="60.0" />
+         </font></Button>
    </children>
 </GridPane>

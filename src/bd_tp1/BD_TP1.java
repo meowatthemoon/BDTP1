@@ -23,6 +23,7 @@ public class BD_TP1 extends Application {
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
+        stage.setTitle("Controlo de Transações: André Correia, João Gomes, Miguel Brandão");
         stage.show();
     }
 
