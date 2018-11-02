@@ -12,6 +12,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,8 +24,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -32,10 +39,19 @@ public class LogController implements Initializable {
     volatile Thread timer;
     @FXML
     GridPane gridLogs;
+    
+    @FXML
+    TableView TVLog;
+    
+    private ObservableList<ObservableList> data;
+    int facturaID_selecionada;
+    private databaseConnection dbc = new databaseConnection();
+ 
     @FXML
     private void handleActioRefresh(ActionEvent event) {
         mostraLogs();
     }
+    
     @FXML
     private void handleActioVoltar(ActionEvent event) {
         timer = null;//stop
@@ -51,35 +67,61 @@ public class LogController implements Initializable {
         } catch (IOException ex) {
         }
     }
+    
     public void mostraLogs() {
-        gridLogs.getChildren().clear();
-        gridLogs.add(new Label("NumReg"), 0, 0);
-        gridLogs.add(new Label("Tipo Evento"), 1, 0);
-        gridLogs.add(new Label("Objeto"), 2, 0);
-        gridLogs.add(new Label("Valor"), 3, 0);
-        gridLogs.add(new Label("Referência"), 4, 0);
-        gridLogs.add(new Label("UserID"), 5, 0);
-        gridLogs.add(new Label("TerminalID"), 6, 0);
-        gridLogs.add(new Label("TerminalName"), 7, 0);
-        gridLogs.add(new Label("DCriacao"), 8, 0);
-        ResultSet linhas = new databaseConnection().createQuery("Select * from LogOperations");
-        try {
-            int index_linha = 1;
-            while (linhas.next()) {
-                gridLogs.add(new Label(linhas.getInt("NumReg") + ""), 0, index_linha);
-                gridLogs.add(new Label(linhas.getString("EventType")), 1, index_linha);
-                gridLogs.add(new Label(linhas.getString("Objecto") + ""), 2, index_linha);
-                gridLogs.add(new Label(linhas.getString("Valor") + ""), 3, index_linha);
-                gridLogs.add(new Label(linhas.getString("Referencia") + ""), 4, index_linha);
-                gridLogs.add(new Label(linhas.getString("UserID") + ""), 5, index_linha);
-                gridLogs.add(new Label(linhas.getString("TerminalD") + ""), 6, index_linha);
-                gridLogs.add(new Label(linhas.getString("TerminalName") + ""), 7, index_linha);
-                gridLogs.add(new Label(linhas.getString("DCriacao") + ""), 8, index_linha);
-                index_linha++;
+
+        
+        
+        
+        data = FXCollections.observableArrayList();
+        try{
+            
+            String SQL = "SELECT TOP(50) * FROM LogOperations";
+            //ResultSet
+            ResultSet rs = dbc.createQuery(SQL);
+
+            /**********************************
+             * TABLE COLUMN ADDED DYNAMICALLY *
+             **********************************/
+            for(int i=0 ; i<rs.getMetaData().getColumnCount(); i++){
+                //We are using non property style for making dynamic table
+                final int j = i;                
+                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i+1));
+                col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){                    
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {                                                                                              
+                        return new SimpleStringProperty(param.getValue().get(j).toString());                        
+                    }                    
+                });
+
+                TVLog.getColumns().addAll(col); 
+                System.out.println("Column ["+i+"] ");
             }
-        } catch (SQLException ex) {
-            System.out.println(ex.toString());
-        }
+
+            /********************************
+             * Data added to ObservableList *
+             ********************************/
+            while(rs.next()){
+                //Iterate Row
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for(int i=1 ; i<=rs.getMetaData().getColumnCount(); i++){
+                    //Iterate Column
+                    row.add(rs.getString(i));
+                }
+                System.out.println("Row [1] added "+row );
+                data.add(row);
+
+            }
+
+            //FINALLY ADDED TO TableView
+            TVLog.setItems(data);
+          }catch(Exception e){
+              e.printStackTrace();
+              System.out.println("Error on Building Data");             
+          }
+        
+        
+        
+        
 
     }
     @Override
