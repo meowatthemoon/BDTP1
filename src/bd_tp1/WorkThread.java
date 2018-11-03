@@ -167,7 +167,7 @@ public class WorkThread extends Thread {
         System.out.println(nome + "   " + address);
         
         //Log
-        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','inicio',GetDate(),'"+ref+"')");
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Begin',GetDate(),'"+ref+"')");
         //Begin Transaction
         dbc.createSettingQuery("BEGIN TRANSACTION");
         //Isolation Level
@@ -184,14 +184,14 @@ public class WorkThread extends Thread {
         } catch (SQLException ex){
             System.out.println(ex.getMessage());
             dbc.createSettingQuery("ROLLBACK");
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-rollback',GetDate(),'"+ref+"')");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Rollback',GetDate(),'"+ref+"')");
             
             System.out.println("Transaction Ended Failed to attain max ID");
             return;
         }
         if(dbc.createModificationQuery("INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')")==-1){
             dbc.createSettingQuery("ROLLBACK");
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-rollback',GetDate(),'"+ref+"')");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Rollback',GetDate(),'"+ref+"')");
             return;
         }
                
@@ -214,13 +214,13 @@ public class WorkThread extends Thread {
             
             if(dbc.createModificationQuery("INSERT INTO FactLinha VALUES (" + factID + "," + produtoID + ",'" + designacao + "'," + preco + "," + quantidade + ")")==-1){
                 dbc.createSettingQuery("ROLLBACK");
-                dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-rollback',GetDate(),'"+ref+"')");
+                dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Rollback',GetDate(),'"+ref+"')");
                 return;
             }
 
         }
         dbc.createSettingQuery("COMMIT");
-        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','fim-commit',GetDate(),'"+ref+"')");
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Commit',GetDate(),'"+ref+"')");
         System.out.println("Transaction Ended");
             
     }
@@ -238,7 +238,7 @@ public class WorkThread extends Thread {
         }
         
         //Log
-        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','inicio',GetDate(),'"+ref+"')");
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'"+ref+"')");
         //Begin Transaction
         dbc.createSettingQuery("BEGIN TRANSACTION");
         //Isolation Level
@@ -264,7 +264,7 @@ public class WorkThread extends Thread {
             dbc.createQuery("update Factura set ClienteID="+clienteID+",Nome='"+nome+"',Morada='"+morada+"' where FacturaID="+facturaID);
             //commit transaction
             dbc.createSettingQuery("COMMIT");
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','fim-commit',GetDate(),'"+ref+"')");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
             
             System.out.println("Transaction Ended");
         } catch (SQLException ex) {
@@ -284,7 +284,7 @@ public class WorkThread extends Thread {
             return;
         }
         //Log
-        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','inicio',GetDate(),'"+ref+"')");
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','Begin',GetDate(),'"+ref+"')");
         //Begin Transaction
         dbc.createSettingQuery("BEGIN TRANSACTION");
         //Isolation Level
@@ -304,7 +304,7 @@ public class WorkThread extends Thread {
             dbc.createQuery("delete from Factura where FacturaID="+facturaID);
             //commit transaction
             dbc.createSettingQuery("COMMIT");
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','fim-commit',GetDate(),'"+ref+"')");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('D','Commit',GetDate(),'"+ref+"')");
             System.out.println("Transaction Ended: delete");
         } catch (SQLException ex) {
             Logger.getLogger(WorkController.class.getName()).log(Level.SEVERE, null, ex);
