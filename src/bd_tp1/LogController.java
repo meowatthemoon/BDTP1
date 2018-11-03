@@ -71,7 +71,8 @@ public class LogController implements Initializable {
     public void mostraLogs() {
 
         
-        
+        TVLog.getItems().clear();
+        TVLog.getColumns().clear();
         
         data = FXCollections.observableArrayList();
         try{
