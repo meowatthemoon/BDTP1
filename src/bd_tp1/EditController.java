@@ -74,12 +74,38 @@ public class EditController implements Initializable {
             System.out.println("Não pode ser Nome vazio!");
         }
         else{
-            //String no TextView
-            //System.out.println(txtNome.getText().toString()); 
+
+            //referência da transação para o log
+            String ref;
+            try {
+                ResultSet date=dbc.createQuery("select GetDate()");
+                date.next();
+                ref = "G1-"+date.getString(1);
+                System.out.println("REFERÊNCIA : "+ref);
+            } catch (SQLException ex) {
+                System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+                return;
+            }
+
+            //Log
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'"+ref+"')");
+            //Begin Transaction
+            dbc.createSettingQuery("BEGIN TRANSACTION");
+            //Isolation Level
+            if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)){
+                System.out.println("Failed to set isolation level");
+                dbc.createSettingQuery("ROLLBACK");
+                return;
+            }
+            
             //Vamos mudar na Base de Dados, temos a faturaID
             sql = "Update Factura " + "Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
             System.out.println(sql);
             System.out.println(dbc.createModificationQuery(sql));
+            //commit transaction
+            dbc.createSettingQuery("COMMIT");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
+                            
             
         }   
     }
