@@ -34,6 +34,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  * FXML Controller class
@@ -50,6 +52,8 @@ public class Edit_EscolherController implements Initializable {
     TableView TVfatura;
     @FXML
     TextField TAstartId;
+    @FXML
+    Button BSelecionar;
     
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
@@ -73,26 +77,41 @@ public class Edit_EscolherController implements Initializable {
     private void handleActionRefresh(ActionEvent event){
         try{
             refresh(Integer.parseInt(TAstartId.getText()));
+            BSelecionar.setDisable(false);
         } catch(NumberFormatException ex){
             System.out.println(ex.getMessage());
         }
     }
     @FXML
     private void handleActionSelectionar(ActionEvent event){
-        //new editFactura(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1, TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
-        Parent window3; //we need to load the layout that we want to swap
-        try {
-            window3 = FXMLLoader.load(getClass().getResource("Edit.fxml"));
-            Scene newScene; //then we create a new scene with our new layout
-            newScene = new Scene(window3);
-            Stage mainWindow; //Here is the magic. We get the reference to main Stage.
-            mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            mainWindow.setScene(newScene); //here we simply set the new scene
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+
+        if(TVfatura.getSelectionModel().isEmpty()){
+            
+            final JPanel panel = new JPanel();
+
+            JOptionPane.showMessageDialog(panel, "Por favor selecione uma fatura", "Aviso",
+            JOptionPane.WARNING_MESSAGE);
+            
         }
+        else{
+            new editFactura(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1, TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
+            Parent window3; //we need to load the layout that we want to swap
+            try {
+                window3 = FXMLLoader.load(getClass().getResource("Edit.fxml"));
+                Scene newScene; //then we create a new scene with our new layout
+                newScene = new Scene(window3);
+                Stage mainWindow; //Here is the magic. We get the reference to main Stage.
+                mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                mainWindow.setScene(newScene); //here we simply set the new scene
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
+
     }
     
+
+
     private void refresh(int startID){
         TVfatura.getItems().clear();
         TVfatura.getColumns().clear();
@@ -155,6 +174,8 @@ public class Edit_EscolherController implements Initializable {
         CBIsolLevel.getItems().addAll((Object[]) isolLevel);
         CBIsolLevel.getSelectionModel().select(1);
         TAstartId.setText("0");
+        
+        BSelecionar.setDisable(true);
     }
 
 }
