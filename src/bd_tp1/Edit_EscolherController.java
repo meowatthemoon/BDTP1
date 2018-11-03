@@ -95,6 +95,7 @@ public class Edit_EscolherController implements Initializable {
         }
         else{
             new editFactura(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1, TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
+            new editFactura(CBIsolLevel.getSelectionModel().getSelectedItem().toString());
             Parent window3; //we need to load the layout that we want to swap
             try {
                 window3 = FXMLLoader.load(getClass().getResource("Edit.fxml"));
