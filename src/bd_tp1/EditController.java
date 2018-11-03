@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 public class EditController implements Initializable {
 
     int facturaID;
+    String nivelisolamento;
     @FXML
     GridPane gridProdutos;
     @FXML
@@ -87,6 +88,7 @@ public class EditController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {        
         facturaID = editFactura.getFacturaID();
+        nivelisolamento = editFactura.getNIFactura();
         ResultSet rs = new databaseConnection().createQuery("Select Nome from Factura where FacturaID=" + facturaID);
         try {
             rs.next();
@@ -111,19 +113,45 @@ public class EditController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         System.out.println("FAZER: UPDATE QTD");
-                        //FAZER
+                        
+                        //referência da transação para o log
+                        String ref;
+                        try {
+                            ResultSet date=dbc.createQuery("select GetDate()");
+                            date.next();
+                            ref = "G1-"+date.getString(1);
+                            System.out.println("REFERÊNCIA : "+ref);
+                        } catch (SQLException ex) {
+                            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+                            return;
+                        }
+
+                        //Log
+                        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'"+ref+"')");
+                        //Begin Transaction
+                        dbc.createSettingQuery("BEGIN TRANSACTION");
+                        //Isolation Level
+                        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)){
+                            System.out.println("Failed to set isolation level");
+                            dbc.createSettingQuery("ROLLBACK");
+                            return;
+                        }
+                        
+                        
+                        
                         String sql;
                         String test=txt.getText();
-                        
                         //Testar se é inteiro
                         try{
-                            int numero = Integer.parseInt(test);
-                            
+                            int numero = Integer.parseInt(test);    
                             String quantidade = Integer.toString(numero);
                             
                             sql = "Update FactLinha " + "Set Qtd = '" + quantidade + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
                             System.out.println(sql);
                             System.out.println(dbc.createModificationQuery(sql));
+                            //commit transaction
+                            dbc.createSettingQuery("COMMIT");
+                            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
                             
                         }
                         catch(Exception ex){
