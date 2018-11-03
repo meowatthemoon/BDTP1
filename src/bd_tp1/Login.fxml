@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LoginController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: GHOSTWHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LoginController">
   <columnConstraints>
     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
   </columnConstraints>
@@ -28,7 +28,7 @@
       <Label text="Database" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <Label text="User" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
       <Label text="Password" GridPane.halignment="CENTER" GridPane.rowIndex="6" />
-      <Button mnemonicParsing="false" onAction="#handleActionLogin" text="Login" GridPane.halignment="CENTER" GridPane.rowIndex="8">
+      <Button defaultButton="true" mnemonicParsing="false" onAction="#handleActionLogin" text="Login" GridPane.halignment="CENTER" GridPane.rowIndex="8">
          <GridPane.margin>
             <Insets top="10.0" />
          </GridPane.margin>

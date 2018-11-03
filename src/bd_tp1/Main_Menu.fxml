@@ -50,4 +50,7 @@
             <ColorAdjust brightness="-0.5" contrast="1.0" hue="-0.93" />
          </effect></Button>
    </children>
+   <effect>
+      <ColorAdjust hue="-0.66" />
+   </effect>
 </GridPane>

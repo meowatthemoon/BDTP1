@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LogController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: GHOSTWHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LogController">
    <top>
-      <Button mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" BorderPane.alignment="CENTER" />
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" prefHeight="41.0" prefWidth="600.0" text="Refresh" BorderPane.alignment="CENTER">
+         <effect>
+            <ColorAdjust hue="-0.2" />
+         </effect></Button>
    </top>
    <bottom>
-      <Button mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER" />
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER">
+         <effect>
+            <ColorAdjust hue="-1.0" />
+         </effect></Button>
    </bottom>
    <center>
-      <TableView fx:id="TVLog" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TableView fx:id="TVLog" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: GHOSTWHITE;" BorderPane.alignment="CENTER" />
    </center>
+   <effect>
+      <ColorAdjust />
+   </effect>
 </BorderPane>
