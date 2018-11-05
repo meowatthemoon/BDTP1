@@ -164,14 +164,12 @@ public class Edit_EscolherController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        String[] isolLevel = new String[5];
+        String[] isolLevel = new String[4];
         
         isolLevel[0]="READ UNCOMMITTED";
         isolLevel[1]="READ COMMITTED";
         isolLevel[2]="REPEATABLE READ";
-        isolLevel[2]="READ_COMMITTED_SNAPSHOT";
         isolLevel[3]="SERIALIZABLE";
-        isolLevel[4]="This is an error and should cause the transaction to abort";
         CBIsolLevel.getItems().addAll((Object[]) isolLevel);
         CBIsolLevel.getSelectionModel().select(1);
         TAstartId.setText("0");
