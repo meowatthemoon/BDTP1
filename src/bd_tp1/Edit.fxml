@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -9,7 +10,10 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.EditController">
    <bottom>
-      <Button mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER" />
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER">
+         <effect>
+            <ColorAdjust contrast="0.07" hue="1.0" saturation="0.02" />
+         </effect></Button>
    </bottom>
    <top>
       <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
@@ -28,7 +32,7 @@
                </GridPane.margin>
             </Label>
             <TextField fx:id="txtNome" GridPane.columnIndex="1" />
-            <Button mnemonicParsing="false" onAction="#handleActionUpdateNome" text="(fazer)" GridPane.columnIndex="2" />
+            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleActionUpdateNome" text="(fazer)" GridPane.columnIndex="2" />
          </children>
          <opaqueInsets>
             <Insets />
