@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 public class EditController implements Initializable {
 
     int facturaID;
+    String ref;
     String nivelisolamento;
     @FXML
     GridPane gridProdutos;
@@ -53,6 +54,10 @@ public class EditController implements Initializable {
     
     @FXML
     private void handleActioVoltar(ActionEvent event) {
+        
+        dbc.createSettingQuery("ROLLBACK");
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Rollback',GetDate(),'"+ref+"')");
+        
         Parent window3; //we need to load the layout that we want to swap
         try {
             window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
@@ -74,38 +79,31 @@ public class EditController implements Initializable {
             System.out.println("Não pode ser Nome vazio!");
         }
         else{
-
-            //referência da transação para o log
-            String ref;
-            try {
-                ResultSet date=dbc.createQuery("select GetDate()");
-                date.next();
-                ref = "G1-"+date.getString(1);
-                System.out.println("REFERÊNCIA : "+ref);
-            } catch (SQLException ex) {
-                System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
-                return;
-            }
-
-            //Log
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'"+ref+"')");
-            //Begin Transaction
-            dbc.createSettingQuery("BEGIN TRANSACTION");
-            //Isolation Level
-            if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)){
-                System.out.println("Failed to set isolation level");
-                dbc.createSettingQuery("ROLLBACK");
-                return;
-            }
             
             //Vamos mudar na Base de Dados, temos a faturaID
             sql = "Update Factura " + "Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
-            System.out.println(sql);
-            System.out.println(dbc.createModificationQuery(sql));
-            //commit transaction
-            dbc.createSettingQuery("COMMIT");
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
-                            
+            dbc.createModificationQuery(sql);
+            
+
+           
+            
+            //Voltar à página original
+            Parent window3; //we need to load the layout that we want to swap
+            try {
+                
+                //commit transaction
+                dbc.createSettingQuery("COMMIT");
+                dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
+                
+                window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
+                Scene newScene; //then we create a new scene with our new layout
+                newScene = new Scene(window3);
+                Stage mainWindow; //Here is the magic. We get the reference to main Stage.
+                mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                mainWindow.setScene(newScene); //here we simply set the new scene
+                mainWindow.setTitle("Edit");            
+            } catch (IOException ex) {
+            }
             
         }   
     }
@@ -115,6 +113,33 @@ public class EditController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {        
         facturaID = editFactura.getFacturaID();
         nivelisolamento = editFactura.getNIFactura();
+        
+        //Quando entra neste fxml, têm de indicar que começou uma transação, e que os outros não podem acede-la.
+        
+        //referência da transação para o log
+        try {
+            ResultSet date=dbc.createQuery("select GetDate()");
+            date.next();
+            ref = "G1-"+date.getString(1);
+            System.out.println("REFERÊNCIA : "+ref);
+        } catch (SQLException ex) {
+            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+            return;
+        }
+
+        //Log
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'"+ref+"')");
+        //Begin Transaction
+        dbc.createSettingQuery("BEGIN TRANSACTION");
+        System.out.println("**************BEGIN TRANSACTION *************");
+        //Isolation Level
+        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)){
+            System.out.println("Failed to set isolation level");
+            dbc.createSettingQuery("ROLLBACK");
+            return;
+        }
+        
+        
         ResultSet rs = new databaseConnection().createQuery("Select Nome from Factura where FacturaID=" + facturaID);
         try {
             rs.next();
@@ -139,32 +164,7 @@ public class EditController implements Initializable {
                     @Override
                     public void handle(ActionEvent event) {
                         System.out.println("FAZER: UPDATE QTD");
-                        
-                        //referência da transação para o log
-                        String ref;
-                        try {
-                            ResultSet date=dbc.createQuery("select GetDate()");
-                            date.next();
-                            ref = "G1-"+date.getString(1);
-                            System.out.println("REFERÊNCIA : "+ref);
-                        } catch (SQLException ex) {
-                            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
-                            return;
-                        }
-
-                        //Log
-                        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'"+ref+"')");
-                        //Begin Transaction
-                        dbc.createSettingQuery("BEGIN TRANSACTION");
-                        //Isolation Level
-                        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)){
-                            System.out.println("Failed to set isolation level");
-                            dbc.createSettingQuery("ROLLBACK");
-                            return;
-                        }
-                        
-                        
-                        
+                                            
                         String sql;
                         String test=txt.getText();
                         //Testar se é inteiro
@@ -178,6 +178,22 @@ public class EditController implements Initializable {
                             //commit transaction
                             dbc.createSettingQuery("COMMIT");
                             dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
+                            
+                            System.out.println("Commit");
+                            
+                            //Voltar à página original
+                            Parent window3; //we need to load the layout that we want to swap
+                            try {
+                                window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
+                                Scene newScene; //then we create a new scene with our new layout
+                                newScene = new Scene(window3);
+                                Stage mainWindow; //Here is the magic. We get the reference to main Stage.
+                                mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                                mainWindow.setScene(newScene); //here we simply set the new scene
+                                mainWindow.setTitle("Edit");            
+                            } catch (IOException ex) {
+                            }
+                            
                             
                         }
                         catch(Exception ex){
