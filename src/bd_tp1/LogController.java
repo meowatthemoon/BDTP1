@@ -41,7 +41,7 @@ public class LogController implements Initializable {
     @FXML
     TableView TVLog;
     @FXML
-    ChoiceBox CBammount;
+    TextField txtNumber;
     
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
