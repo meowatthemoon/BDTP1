@@ -48,6 +48,7 @@ public class EditController implements Initializable {
     List<String> lista_quantidades = new ArrayList<String>();
     
     @FXML TextField txtteste;
+    @FXML TextField txtdescricao;
 
  
 
@@ -98,8 +99,12 @@ public class EditController implements Initializable {
             //Temos de atualizar os valores nos textfields...
             for(int i = 0; i < contador; i++){
 
-                txtteste = (TextField) getNodeFromGridPane(gridProdutos,2,i+1);    
+                txtteste = (TextField) getNodeFromGridPane(gridProdutos,2,i+1);
+                txtdescricao = (TextField) getNodeFromGridPane(gridProdutos,1,i+1);
                 sql = "Update FactLinha " + "Set Qtd = '" + txtteste.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + lista_produtos.get(i);
+                System.out.println(sql);
+                System.out.println(dbc.createModificationQuery(sql));
+                sql = "Update FactLinha " + "Set Designacao = '" + txtdescricao.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + lista_produtos.get(i);
                 System.out.println(sql);
                 System.out.println(dbc.createModificationQuery(sql));
                 
@@ -178,7 +183,8 @@ public class EditController implements Initializable {
                 Label produtoid = new Label(produtos.getInt("ProdutoID")+""); 
                 lista_produtos.add(contador,produtoid.getText());
                 gridProdutos.add(produtoid, 0, index_linha);
-                gridProdutos.add(new Label(produtos.getString("Designacao")), 1, index_linha);
+                TextField txt2=new TextField(produtos.getString("Designacao")+"");
+                gridProdutos.add(txt2, 1, index_linha);
                 TextField txt=new TextField(produtos.getInt("Qtd")+"");
                 gridProdutos.add(txt, 2, index_linha);
 
