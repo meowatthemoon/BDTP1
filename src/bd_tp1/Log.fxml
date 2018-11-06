@@ -36,7 +36,7 @@
             </Button>
             <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioShowSameRef" text="Show same Ref" />
             <TextField fx:id="txtNumber" alignment="CENTER" onAction="#handleActioRefresh" text="50" GridPane.columnIndex="1" />
-            <RadioButton mnemonicParsing="false" text="RadioButton" GridPane.columnIndex="3" />
+            <RadioButton fx:id="RBfreezeView" mnemonicParsing="false" onAction="#handleActionFreezeView" text="Freeze view" GridPane.columnIndex="3" />
          </children>
       </GridPane>
       <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" GridPane.rowIndex="2">

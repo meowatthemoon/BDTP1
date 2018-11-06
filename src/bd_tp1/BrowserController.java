@@ -44,7 +44,7 @@ public class BrowserController implements Initializable {
     TextField txtNumber;
     
     
-    
+    boolean freeze = false;
     int maxDelay=30000;
     int minDelay=5000;
     int timerDelay=minDelay;
@@ -54,6 +54,12 @@ public class BrowserController implements Initializable {
     volatile Thread timer;
     private ObservableList<ObservableList> data;
 
+    @FXML
+    private void handleActionFreezeView(){
+        freeze = !freeze;
+        System.out.println(freeze);
+    }
+    
     @FXML
     private void handleActioRefresh(ActionEvent event) {
         try{
@@ -139,7 +145,6 @@ public class BrowserController implements Initializable {
                 });
 
                 TVfatura.getColumns().addAll(col); 
-                System.out.println("Column ["+i+"] ");
             }
 
             /********************************
@@ -152,7 +157,6 @@ public class BrowserController implements Initializable {
                     //Iterate Column
                     row.add(rs.getString(i));
                 }
-                System.out.println("Row [1] added "+row );
                 data.add(row);
 
             }
@@ -187,7 +191,6 @@ public class BrowserController implements Initializable {
                 });
 
                 TVfactLinha.getColumns().addAll(col); 
-                System.out.println("Column ["+i+"] ");
             }
 
             /********************************
@@ -200,7 +203,6 @@ public class BrowserController implements Initializable {
                     //Iterate Column
                     row.add(rs.getString(i));
                 }
-                System.out.println("Row [1] added "+row );
                 data.add(row);
 
             }
@@ -224,11 +226,15 @@ public class BrowserController implements Initializable {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            mostraFacturas();
-                            try{
-                                mostraLinhas(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1,TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
-                            }catch(Exception e){
-                                
+                            System.out.println("beggining update");
+                            if(!freeze){
+                                System.out.println("updated");
+                                mostraFacturas();
+                                try{
+                                    mostraLinhas(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1,TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
+                                }catch(Exception e){
+                                    
+                                }
                             }
                         }
                     });

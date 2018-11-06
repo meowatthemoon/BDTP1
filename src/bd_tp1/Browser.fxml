@@ -29,7 +29,19 @@
          <effect>
             <ColorAdjust hue="1.0" />
          </effect></Button>
-      <Button fx:id="BTNrefresh" defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
       <TextField fx:id="txtNumber" alignment="CENTER" text="50" />
+      <GridPane GridPane.columnIndex="1">
+        <columnConstraints>
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="BTNrefresh" defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" text="Refresh" GridPane.columnIndex="1" />
+            <RadioButton mnemonicParsing="false" onAction="#handleActionFreezeView" text="Freeze view" textAlignment="CENTER" />
+         </children>
+      </GridPane>
    </children>
 </GridPane>

@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -39,11 +40,13 @@ public class LogController implements Initializable {
     boolean atualizar = true;
     
     @FXML
+    RadioButton RBfreezeView;
+    @FXML
     TableView TVLog;
     @FXML
     TextField txtNumber;
     
-    
+    boolean freeze = false;
     
     int maxDelay=30000;
     int minDelay=5000;
@@ -212,6 +215,12 @@ public class LogController implements Initializable {
           }
     }
     
+    @FXML
+    public void handleActionFreezeView(){
+        freeze = !freeze;
+        System.out.println(freeze);
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
@@ -223,7 +232,9 @@ public class LogController implements Initializable {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            if(atualizar)
+                            System.out.println("Beggining update");
+                            if(atualizar && !freeze)
+                                System.out.println("updated");
                                 mostraLogs();
                         }
                     });
