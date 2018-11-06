@@ -8,31 +8,23 @@ package bd_tp1;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -48,9 +40,8 @@ public class BrowserController implements Initializable {
     @FXML
     TableView TVfactLinha;
     @FXML
-    TextField TAstartId;
-    @FXML
-    ChoiceBox CBammount;
+    TextField txtNumber;
+    
     
     private databaseConnection dbc = new databaseConnection();
     int facturaID_selecionada;
@@ -60,7 +51,7 @@ public class BrowserController implements Initializable {
     @FXML
     private void handleActioRefresh(ActionEvent event) {
         try{
-            mostraFacturas(Integer.valueOf(TAstartId.getText()), Integer.valueOf(CBammount.getValue().toString()));
+            mostraFacturas();
         } catch(NumberFormatException ex){
             System.out.println(ex.getMessage());
         }
@@ -89,11 +80,17 @@ public class BrowserController implements Initializable {
         mostraLinhas(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1,TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
     }
 
-    public void mostraFacturas(int startId, int ammount) {
+    public void mostraFacturas() {
         data = FXCollections.observableArrayList();
+        int number=50;
+        try{
+            number=Integer.parseInt(txtNumber.getText());
+        }catch(Exception e){
+            txtNumber.setText("50");
+        }
         try{
             
-            String SQL = "SELECT * FROM Factura ORDER BY FacturaID OFFSET " + startId + " ROWS FETCH NEXT " + ammount + " ROWS ONLY";
+            String SQL = "SELECT TOP("+number+") * FROM Factura ORDER BY FacturaID desc";
             //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
 
@@ -187,13 +184,7 @@ public class BrowserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        String[] ammounts = new String[3];
-        ammounts[0] = "50";
-        ammounts[1] = "250";
-        ammounts[2] = "500";
-        CBammount.getItems().addAll((Object[]) ammounts);
-        CBammount.getSelectionModel().select(0);
-        TAstartId.setText("0");
+        
         /*facturaID_selecionada = 0;//pk na definicao da tabela os IDS teem de ser >=1
 
         timer = new Thread() {
