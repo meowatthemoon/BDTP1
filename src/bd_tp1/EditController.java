@@ -44,8 +44,12 @@ public class EditController implements Initializable {
     TextField txtNome;
     databaseConnection dbc = new databaseConnection();
     int contador = 0;
-    List<String> lista_produtos;
+    List<String> lista_produtos = new ArrayList<String>();
     List<String> lista_quantidades = new ArrayList<String>();
+    
+    @FXML TextField txtteste;
+
+ 
 
     //função para ir buscar elemento segundo colunas e linhas da gridpane.
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -89,12 +93,15 @@ public class EditController implements Initializable {
             sql = "Update Factura " + "Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
             dbc.createModificationQuery(sql);
             
+            
+            
             //Temos de atualizar os valores nos textfields...
             for(int i = 0; i < contador; i++){
-              
-            //sql = "Update FactLinha " + "Set Qtd = '" + quantidade + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
-            System.out.println(sql);
-            System.out.println(dbc.createModificationQuery(sql));
+
+                txtteste = (TextField) getNodeFromGridPane(gridProdutos,2,i+1);    
+                sql = "Update FactLinha " + "Set Qtd = '" + txtteste.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + lista_produtos.get(i);
+                System.out.println(sql);
+                System.out.println(dbc.createModificationQuery(sql));
                 
             }
 
@@ -158,6 +165,7 @@ public class EditController implements Initializable {
             rs.next();
             txtNome.setText(rs.getString("Nome"));
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
         gridProdutos.add(new Label("Produto ID"), 0, 0);
         gridProdutos.add(new Label("Designação"), 1, 0);
@@ -166,62 +174,23 @@ public class EditController implements Initializable {
         int index_linha = 1;
         try {
             while (produtos.next()) {
-                contador++;
                 System.out.println(index_linha);
                 Label produtoid = new Label(produtos.getInt("ProdutoID")+""); 
-
+                lista_produtos.add(contador,produtoid.getText());
                 gridProdutos.add(produtoid, 0, index_linha);
                 gridProdutos.add(new Label(produtos.getString("Designacao")), 1, index_linha);
                 TextField txt=new TextField(produtos.getInt("Qtd")+"");
                 gridProdutos.add(txt, 2, index_linha);
-                Button b = new Button("(fazer)");
-                b.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        System.out.println("FAZER: UPDATE QTD");
-                                            
-                        String sql;
-                        String test=txt.getText();
-                        //Testar se é inteiro
-                        try{
-                            int numero = Integer.parseInt(test);    
-                            String quantidade = Integer.toString(numero);
-                            
-                            sql = "Update FactLinha " + "Set Qtd = '" + quantidade + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
-                            System.out.println(sql);
-                            System.out.println(dbc.createModificationQuery(sql));
-                            //commit transaction
-                            dbc.createSettingQuery("COMMIT");
-                            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
-                            
-                            System.out.println("Commit");
-                            
-                            //Voltar à página original
-                            Parent window3; //we need to load the layout that we want to swap
-                            try {
-                                window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
-                                Scene newScene; //then we create a new scene with our new layout
-                                newScene = new Scene(window3);
-                                Stage mainWindow; //Here is the magic. We get the reference to main Stage.
-                                mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                                mainWindow.setScene(newScene); //here we simply set the new scene
-                                mainWindow.setTitle("Edit");            
-                            } catch (IOException ex) {
-                            }
-                            
-                            
-                        }
-                        catch(Exception ex){
-                                System.out.println("Não é inteiro");
-                        }
 
-                    }
-                });
+                //lista_quantidades.add(contador, txt.getText());
+                
                 //gridProdutos.add(b, 3, index_linha);
-                index_linha++;
+                index_linha++;                 contador++;
             }
         } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
         }
+        
     }
     
 

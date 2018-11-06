@@ -105,7 +105,7 @@ public class Edit_EscolherController implements Initializable {
                 mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 mainWindow.setScene(newScene); //here we simply set the new scene
             } catch (IOException ex) {
-                System.out.println(ex.getMessage());
+                ex.printStackTrace();
             }
         }
 
