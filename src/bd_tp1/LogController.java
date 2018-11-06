@@ -11,6 +11,8 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -23,9 +25,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -36,12 +40,19 @@ import javafx.util.Callback;
  * @author Andre
  */
 public class LogController implements Initializable {
-    volatile Thread timer;
+    Thread timer;
+    boolean atualizar = true;
+    
     @FXML
     GridPane gridLogs;
     
     @FXML
     TableView TVLog;
+    @FXML
+    TextField txtNumber;
+    
+    @FXML
+    ChoiceBox CBammount;
     
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
@@ -68,16 +79,38 @@ public class LogController implements Initializable {
         }
     }
     
+    public void handleActioShowSameRef(){
+        String temp = TVLog.getSelectionModel().getSelectedItem().toString().split(",")[4].substring(1);
+        atualizar=false;
+        mostraRefLogs(temp);
+    }
+    
     public void mostraLogs() {
-
+        
+        atualizar = true;
         
         TVLog.getItems().clear();
         TVLog.getColumns().clear();
         
         data = FXCollections.observableArrayList();
+        int number;
+        try{
+            number=Integer.parseInt(txtNumber.getText());
+            if(number<1){
+                txtNumber.setText("50");
+                return;
+            }
+        }catch(Exception e){
+            txtNumber.setText("50");
+            return;
+        }
         try{
             
-            String SQL = "SELECT TOP(50) * FROM LogOperations";
+<<<<<<< HEAD
+            String SQL = "SELECT TOP(" + CBammount.getValue() + ") * FROM LogOperations";
+=======
+            String SQL = "SELECT TOP("+number+") * FROM LogOperations order by DCriacao desc";
+>>>>>>> 2ff488488555acbf76514108ad398d92db56f538
             //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
 
@@ -119,25 +152,82 @@ public class LogController implements Initializable {
               e.printStackTrace();
               System.out.println("Error on Building Data");             
           }
-        
-        
-        
-        
-
     }
+    
+    public void mostraRefLogs(String ref) {
+        
+        TVLog.getItems().clear();
+        TVLog.getColumns().clear();
+        
+        data = FXCollections.observableArrayList();
+        try{
+            
+            String SQL = "SELECT * FROM LogOperations WHERE Referencia='" + ref + "'";
+            //ResultSet
+            ResultSet rs = dbc.createQuery(SQL);
+
+            /**********************************
+             * TABLE COLUMN ADDED DYNAMICALLY *
+             **********************************/
+            for(int i=0 ; i<rs.getMetaData().getColumnCount(); i++){
+                //We are using non property style for making dynamic table
+                final int j = i;                
+                TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i+1));
+                col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList,String>,ObservableValue<String>>(){                    
+                    public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {                                                                                              
+                        return new SimpleStringProperty(param.getValue().get(j).toString());                        
+                    }                    
+                });
+
+                TVLog.getColumns().addAll(col); 
+                System.out.println("Column ["+i+"] ");
+            }
+
+            /********************************
+             * Data added to ObservableList *
+             ********************************/
+            while(rs.next()){
+                //Iterate Row
+                ObservableList<String> row = FXCollections.observableArrayList();
+                for(int i=1 ; i<=rs.getMetaData().getColumnCount(); i++){
+                    //Iterate Column
+                    row.add(rs.getString(i));
+                }
+                System.out.println("Row [1] added "+row );
+                data.add(row);
+
+            }
+
+            //FINALLY ADDED TO TableView
+            TVLog.setItems(data);
+          }catch(Exception e){
+              e.printStackTrace();
+              System.out.println("Error on Building Data");             
+          }
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        String[] ammounts = new String[3];
+        ammounts[0] = "50";
+        ammounts[1] = "250";
+        ammounts[2] = "500";
+        CBammount.getItems().addAll((Object[]) ammounts);
+        CBammount.getSelectionModel().select(0);
+        mostraLogs();
+        
         timer = new Thread() {
             public void run() {
                 while (timer != null) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            mostraLogs();
+                            if(atualizar)
+                                mostraLogs();
                         }
                     });
                     try {
-                        sleep(10000);//FAZER TIMER!!!!!!
+                        sleep(10000);
                     } catch (InterruptedException ex) {
                     }
                 }

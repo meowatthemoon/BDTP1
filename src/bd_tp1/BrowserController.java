@@ -194,9 +194,9 @@ public class BrowserController implements Initializable {
         CBammount.getItems().addAll((Object[]) ammounts);
         CBammount.getSelectionModel().select(0);
         TAstartId.setText("0");
-        /*facturaID_selecionada = 0;//pk na definicao da tabela os IDS teem de ser >=1
+        facturaID_selecionada = 0;//pk na definicao da tabela os IDS teem de ser >=1
 
-        timer = new Thread() {
+        /*timer = new Thread() {
             public void run() {
                 while (timer != null) {
                     Platform.runLater(new Runnable() {

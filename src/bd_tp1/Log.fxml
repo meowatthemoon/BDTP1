@@ -8,13 +8,26 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: GHOSTWHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LogController">
-   <top>
-      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" prefHeight="41.0" prefWidth="600.0" text="Refresh" BorderPane.alignment="CENTER">
+<<<<<<< HEAD
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="bd_tp1.LogController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" percentHeight="8.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" GridPane.rowIndex="2">
          <effect>
-            <ColorAdjust hue="-0.2" />
-         </effect></Button>
-   </top>
+            <ColorAdjust hue="-1.0" />
+         </effect>
+      </Button>
+      <TableView fx:id="TVLog" style="-fx-background-color: GHOSTWHITE;" GridPane.rowIndex="1" />
+      <GridPane>
+=======
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: GHOSTWHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.LogController">
    <bottom>
       <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER">
          <effect>
@@ -27,4 +40,45 @@
    <effect>
       <ColorAdjust />
    </effect>
+   <top>
+      <GridPane BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+>>>>>>> 2ff488488555acbf76514108ad398d92db56f538
+         <children>
+            <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioRefresh" prefHeight="41.0" prefWidth="600.0" text="Refresh" GridPane.columnIndex="1">
+               <effect>
+                  <ColorAdjust hue="-0.2" />
+               </effect>
+            </Button>
+<<<<<<< HEAD
+            <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioShowSameRef" prefHeight="41.0" prefWidth="600.0" text="Show same Ref" GridPane.columnIndex="2">
+               <effect>
+                  <ColorAdjust hue="-0.2" />
+               </effect>
+            </Button>
+            <ChoiceBox fx:id="CBammount" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+   </children>
+</GridPane>
+=======
+            <TextField fx:id="txtNumber" alignment="CENTER" onAction="#handleActioRefresh" text="50" />
+         </children>
+      </GridPane>
+   </top>
 </BorderPane>
+>>>>>>> 2ff488488555acbf76514108ad398d92db56f538
