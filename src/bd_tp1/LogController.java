@@ -43,6 +43,12 @@ public class LogController implements Initializable {
     @FXML
     TextField txtNumber;
     
+    
+    int timerDelay=0;
+    int maxDelay=30000;
+    int minDelay=5000;
+    
+    
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
     private databaseConnection dbc = new databaseConnection();
@@ -88,9 +94,36 @@ public class LogController implements Initializable {
         }catch(Exception e){
             txtNumber.setText("50");
         }
-        try{
+        try{/*
+            //Inicio da pesquisa
+            ResultSet dataInicio= dbc.createQuery("Select GetDate()");
+            dataInicio.next();
+            */
+            //Query em si
             String SQL = "SELECT TOP("+ number + ") * FROM LogOperations order by DCriacao desc";
             ResultSet rs = dbc.createQuery(SQL);
+            //Query de tempo
+            ResultSet media=dbc.createQuery("select DATEDIFF(MILLISECOND, min(dcriacao),GetDate()) from LogOperations where referencia IN(Select  TOP("+ number + ") Referencia from LogOperations order by DCriacao desc)");
+            media.next();
+            /*
+            //Fim da pesquisa
+            ResultSet dataFim= dbc.createQuery("Select GetDate()");
+            dataFim.next();
+            //Calcular tempo
+            ResultSet tempoQ=dbc.createQuery("select DATEDIFF(MILLISECOND,'"+dataInicio.getString(1)+"','"+dataFim.getString(1)+"')");
+            tempoQ.next();*/
+            int tempo=media.getInt(1);
+            if(tempo>maxDelay)
+                tempo=maxDelay;
+            else if(tempo<minDelay)
+                tempo=minDelay;
+            timerDelay=tempo;
+            System.out.println(timerDelay);
+            
+            
+            
+            
+            
             /**********************************
              * TABLE COLUMN ADDED DYNAMICALLY *
              **********************************/
@@ -105,7 +138,6 @@ public class LogController implements Initializable {
                 });
 
                 TVLog.getColumns().addAll(col); 
-                System.out.println("Column ["+i+"] ");
             }
 
             /********************************
@@ -118,7 +150,6 @@ public class LogController implements Initializable {
                     //Iterate Column
                     row.add(rs.getString(i));
                 }
-                System.out.println("Row [1] added "+row );
                 data.add(row);
 
             }
@@ -157,7 +188,6 @@ public class LogController implements Initializable {
                 });
 
                 TVLog.getColumns().addAll(col); 
-                System.out.println("Column ["+i+"] ");
             }
 
             /********************************
@@ -170,7 +200,6 @@ public class LogController implements Initializable {
                     //Iterate Column
                     row.add(rs.getString(i));
                 }
-                System.out.println("Row [1] added "+row );
                 data.add(row);
 
             }
