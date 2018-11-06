@@ -8,49 +8,42 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.EditController">
-   <bottom>
-      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" BorderPane.alignment="CENTER">
-         <effect>
-            <ColorAdjust contrast="0.07" hue="1.0" saturation="0.02" />
-         </effect></Button>
-   </bottom>
-   <top>
-      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Nome">
-               <GridPane.margin>
-                  <Insets right="10.0" />
-               </GridPane.margin>
-            </Label>
-            <TextField fx:id="txtNome" GridPane.columnIndex="1" />
-            <Button defaultButton="true" mnemonicParsing="false" onAction="#handleActionUpdateNome" text="(fazer)" GridPane.columnIndex="2" />
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </GridPane>
-   </top>
-   <center>
-      <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" BorderPane.alignment="CENTER">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: GHOSTWHITE;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bd_tp1.EditController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="83.0" minHeight="10.0" prefHeight="59.0" vgrow="NEVER" />
+    <RowConstraints maxHeight="329.0" minHeight="10.0" prefHeight="300.0" vgrow="ALWAYS" />
+    <RowConstraints maxHeight="149.0" minHeight="0.0" prefHeight="41.0" valignment="BOTTOM" vgrow="NEVER" />
+  </rowConstraints>
+   <children>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: GHOSTWHITE;" GridPane.rowIndex="1">
          <content>
-            <GridPane fx:id="gridProdutos" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT">
-              <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="-Infinity" />
-              </columnConstraints>
-              <rowConstraints>
-                <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-              </rowConstraints>
+            <GridPane fx:id="gridProdutos" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="600.0">
+
             </GridPane>
          </content>
       </ScrollPane>
-   </center>
-</BorderPane>
+      <GridPane>
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" maxWidth="195.0" minWidth="10.0" prefWidth="116.0" />
+            <ColumnConstraints hgrow="ALWAYS" maxWidth="384.0" minWidth="10.0" prefWidth="306.0" />
+          <ColumnConstraints hgrow="NEVER" maxWidth="199.0" minWidth="0.0" prefWidth="178.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TextField fx:id="txtNome" GridPane.columnIndex="1" />
+            <Button defaultButton="true" maxHeight="-Infinity" mnemonicParsing="false" onAction="#handleActionUpdateNome" prefHeight="40.0" prefWidth="151.0" text="Atualizar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="59.0" prefWidth="155.0" text="Nome:" />
+         </children>
+      </GridPane>
+      <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActioVoltar" text="Voltar" GridPane.rowIndex="2">
+         <effect>
+            <ColorAdjust hue="1.0" />
+         </effect>
+      </Button>
+   </children>
+</GridPane>
