@@ -88,7 +88,7 @@ public class Main_MenuController implements Initializable {
             mainWindow.setScene(newScene); //here we simply set the new scene
             mainWindow.setTitle("Log");
         } catch (IOException ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
