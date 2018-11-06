@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +43,9 @@ public class EditController implements Initializable {
     @FXML
     TextField txtNome;
     databaseConnection dbc = new databaseConnection();
+    int contador = 0;
+    List<String> lista_produtos;
+    List<String> lista_quantidades = new ArrayList<String>();
 
     //função para ir buscar elemento segundo colunas e linhas da gridpane.
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -84,6 +89,14 @@ public class EditController implements Initializable {
             sql = "Update Factura " + "Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
             dbc.createModificationQuery(sql);
             
+            //Temos de atualizar os valores nos textfields...
+            for(int i = 0; i < contador; i++){
+              
+            //sql = "Update FactLinha " + "Set Qtd = '" + quantidade + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
+            System.out.println(sql);
+            System.out.println(dbc.createModificationQuery(sql));
+                
+            }
 
            
             
@@ -153,8 +166,10 @@ public class EditController implements Initializable {
         int index_linha = 1;
         try {
             while (produtos.next()) {
+                contador++;
                 System.out.println(index_linha);
                 Label produtoid = new Label(produtos.getInt("ProdutoID")+""); 
+
                 gridProdutos.add(produtoid, 0, index_linha);
                 gridProdutos.add(new Label(produtos.getString("Designacao")), 1, index_linha);
                 TextField txt=new TextField(produtos.getInt("Qtd")+"");
