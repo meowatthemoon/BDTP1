@@ -44,13 +44,7 @@ public class LogController implements Initializable {
     boolean atualizar = true;
     
     @FXML
-    GridPane gridLogs;
-    
-    @FXML
     TableView TVLog;
-    @FXML
-    TextField txtNumber;
-    
     @FXML
     ChoiceBox CBammount;
     
@@ -93,27 +87,9 @@ public class LogController implements Initializable {
         TVLog.getColumns().clear();
         
         data = FXCollections.observableArrayList();
-        int number;
         try{
-            number=Integer.parseInt(txtNumber.getText());
-            if(number<1){
-                txtNumber.setText("50");
-                return;
-            }
-        }catch(Exception e){
-            txtNumber.setText("50");
-            return;
-        }
-        try{
-            
-<<<<<<< HEAD
-            String SQL = "SELECT TOP(" + CBammount.getValue() + ") * FROM LogOperations";
-=======
-            String SQL = "SELECT TOP("+number+") * FROM LogOperations order by DCriacao desc";
->>>>>>> 2ff488488555acbf76514108ad398d92db56f538
-            //ResultSet
+            String SQL = "SELECT TOP("+ CBammount.getValue() + ") * FROM LogOperations order by DCriacao desc";
             ResultSet rs = dbc.createQuery(SQL);
-
             /**********************************
              * TABLE COLUMN ADDED DYNAMICALLY *
              **********************************/
