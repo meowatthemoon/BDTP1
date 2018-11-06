@@ -91,7 +91,7 @@ public class LogController implements Initializable {
         }
         try{
             
-            String SQL = "SELECT TOP("+number+") * FROM LogOperations";
+            String SQL = "SELECT TOP("+number+") * FROM LogOperations order by DCriacao desc";
             //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
 
