@@ -202,7 +202,7 @@ public class EditController implements Initializable {
 
                     }
                 });
-                gridProdutos.add(b, 3, index_linha);
+                //gridProdutos.add(b, 3, index_linha);
                 index_linha++;
             }
         } catch (SQLException ex) {
