@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -42,6 +43,11 @@ public class BrowserController implements Initializable {
     @FXML
     TextField txtNumber;
     
+    
+    
+    int maxDelay=30000;
+    int minDelay=5000;
+    int timerDelay=minDelay;
     
     private databaseConnection dbc = new databaseConnection();
     int facturaID_selecionada;
@@ -90,9 +96,34 @@ public class BrowserController implements Initializable {
         }
         try{
             
+            
+            /*
+            //Inicio da pesquisa
+            ResultSet dataInicio= dbc.createQuery("Select GetDate()");
+            dataInicio.next();
+            */
+            //Query em si
             String SQL = "SELECT TOP("+number+") * FROM Factura ORDER BY FacturaID desc";
-            //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
+            //Query de tempo
+            ResultSet media=dbc.createQuery("select DATEDIFF(MILLISECOND, min(dcriacao),GetDate()) from LogOperations where referencia IN(Select  TOP("+ number + ") Referencia from LogOperations order by DCriacao desc)");
+            media.next();
+            /*
+            //Fim da pesquisa
+            ResultSet dataFim= dbc.createQuery("Select GetDate()");
+            dataFim.next();
+            //Calcular tempo
+            ResultSet tempoQ=dbc.createQuery("select DATEDIFF(MILLISECOND,'"+dataInicio.getString(1)+"','"+dataFim.getString(1)+"')");
+            tempoQ.next();*/
+            int tempo=media.getInt(1);
+            if(tempo>maxDelay)
+                tempo=maxDelay;
+            else if(tempo<minDelay)
+                tempo=minDelay;
+            timerDelay=tempo;
+            System.out.println(timerDelay);
+            
+            
 
             /**********************************
              * TABLE COLUMN ADDED DYNAMICALLY *
@@ -185,26 +216,30 @@ public class BrowserController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
-        /*facturaID_selecionada = 0;//pk na definicao da tabela os IDS teem de ser >=1
+        //facturaID_selecionada = 0;//pk na definicao da tabela os IDS teem de ser >=1
 
-        /*timer = new Thread() {
+        timer = new Thread() {
             public void run() {
                 while (timer != null) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             mostraFacturas();
-                            mostraLinhas();
+                            try{
+                                mostraLinhas(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1,TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
+                            }catch(Exception e){
+                                
+                            }
                         }
                     });
                     try {
-                        sleep(10000);//FAZER TIMER!!!!!!
+                        sleep(timerDelay);//FAZER TIMER!!!!!!
                     } catch (InterruptedException ex) {
                     }
                 }
             }
         };
-        timer.start();*/
+        timer.start();
     }
 
 }

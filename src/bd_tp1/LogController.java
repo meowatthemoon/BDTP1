@@ -44,10 +44,10 @@ public class LogController implements Initializable {
     TextField txtNumber;
     
     
-    int timerDelay=0;
+    
     int maxDelay=30000;
     int minDelay=5000;
-    
+    int timerDelay=minDelay;
     
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
@@ -228,7 +228,7 @@ public class LogController implements Initializable {
                         }
                     });
                     try {
-                        sleep(10000);
+                        sleep(timerDelay);
                     } catch (InterruptedException ex) {
                     }
                 }
