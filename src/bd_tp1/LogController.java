@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -42,6 +43,8 @@ public class LogController implements Initializable {
     
     @FXML
     TableView TVLog;
+    @FXML
+    TextField txtNumber;
     
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
@@ -75,9 +78,20 @@ public class LogController implements Initializable {
         TVLog.getColumns().clear();
         
         data = FXCollections.observableArrayList();
+        int number;
+        try{
+            number=Integer.parseInt(txtNumber.getText());
+            if(number<1){
+                txtNumber.setText("50");
+                return;
+            }
+        }catch(Exception e){
+            txtNumber.setText("50");
+            return;
+        }
         try{
             
-            String SQL = "SELECT TOP(50) * FROM LogOperations";
+            String SQL = "SELECT TOP("+number+") * FROM LogOperations";
             //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
 
