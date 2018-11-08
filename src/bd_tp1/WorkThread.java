@@ -180,8 +180,8 @@ public class WorkThread extends Thread {
                     factID = rs.getInt(1) + 1;
                 else
                     factID = 1;
-                if(i<3)
-                    factID = 1;
+                /*if(random.nextInt(10)<8)  //this bit of code makes transactions randomly fail to insert sometimes used to test
+                    factID = 1;*/           //if the try system is working!
                 if(dbc.createModificationQuery("INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')")==-1){
                     continue;
                 } else{
@@ -191,8 +191,11 @@ public class WorkThread extends Thread {
                     break;
                 }
             }
-            if(!sucess)
+            if(!sucess){
                 System.out.println("Failed to insert all 5 tries");
+                dbc.createSettingQuery("ROLLBACK");
+                dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Rollback',GetDate(),'"+ref+"')");
+            }
         } catch(Exception ex){
             System.out.println(ex.getMessage());
         }
