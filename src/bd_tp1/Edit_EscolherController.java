@@ -104,6 +104,7 @@ public class Edit_EscolherController implements Initializable {
                 Stage mainWindow; //Here is the magic. We get the reference to main Stage.
                 mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 mainWindow.setScene(newScene); //here we simply set the new scene
+                mainWindow.setResizable(false);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

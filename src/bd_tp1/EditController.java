@@ -82,9 +82,26 @@ public class EditController implements Initializable {
     }
 
     @FXML
-    private void handleActionUpdateNome(ActionEvent event) {
-        String sql;
+    private void handleActionUpdateNome(ActionEvent event){
+        
+        String sql1;
         //Testar se não está vazio
+        if ( txtNome.getText().toString().equals("") ||  txtNome.getText().toString().equals(" ")){
+            System.out.println("Não pode ser Nome vazio!");
+        }
+        else{
+            //Vamos mudar na Base de Dados, temos a faturaID
+            sql1 = "Update Factura " + "Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
+            System.out.println(sql1);
+            dbc.createModificationQuery(sql1);
+        }
+    }
+    
+    @FXML
+    private void handleActionCommit(ActionEvent event) {
+        /*String sql;
+        //Testar se não está vazio 
+        
         if ( txtNome.getText().toString().equals("") ||  txtNome.getText().toString().equals(" ")){
             System.out.println("Não pode ser Nome vazio!");
         }
@@ -110,7 +127,7 @@ public class EditController implements Initializable {
                 
             }
 
-           
+            */
             
             //Voltar à página original
             Parent window3; //we need to load the layout that we want to swap
@@ -130,7 +147,7 @@ public class EditController implements Initializable {
             } catch (IOException ex) {
             }
             
-        }   
+        //}   
     }
     
     
@@ -158,6 +175,7 @@ public class EditController implements Initializable {
         dbc.createSettingQuery("BEGIN TRANSACTION");
         System.out.println("**************BEGIN TRANSACTION *************");
         //Isolation Level
+        System.out.println(nivelisolamento);
         if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)){
             System.out.println("Failed to set isolation level");
             dbc.createSettingQuery("ROLLBACK");
@@ -187,6 +205,26 @@ public class EditController implements Initializable {
                 gridProdutos.add(txt2, 1, index_linha);
                 TextField txt=new TextField(produtos.getInt("Qtd")+"");
                 gridProdutos.add(txt, 2, index_linha);
+                Label seta = new Label(" -> ");
+                gridProdutos.add(seta,3,index_linha);
+                Button b = new Button("Atualizar");
+                b.setDefaultButton(true);
+                
+                b.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override public void handle(ActionEvent e) {
+                        
+                        String sql;
+                        sql = "Update FactLinha " + "Set Qtd = '" + txt.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
+                        System.out.println(sql);
+                        System.out.println(dbc.createModificationQuery(sql));
+                        sql = "Update FactLinha " + "Set Designacao = '" + txt2.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
+                        System.out.println(sql);
+                        System.out.println(dbc.createModificationQuery(sql));
+                        
+                    }
+                });
+                
+                gridProdutos.add(b,4,index_linha);
 
                 //lista_quantidades.add(contador, txt.getText());
                 
