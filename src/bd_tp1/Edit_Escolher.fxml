@@ -51,7 +51,7 @@
             <TextField fx:id="TAstartId" promptText="example : 150" GridPane.columnIndex="3" />
             <Label text="Starting from ID:" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" />
             <Button defaultButton="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleActionRefresh" prefHeight="31.0" prefWidth="299.0" text="Refresh" GridPane.columnIndex="1" />
-            <ChoiceBox fx:id="CBIsolLevel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: ALICEBLUE;" />
+            <ChoiceBox fx:id="CBIsolLevel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#handleChoiceBox" style="-fx-background-color: ALICEBLUE;" />
          </children>
       </GridPane>
    </children>

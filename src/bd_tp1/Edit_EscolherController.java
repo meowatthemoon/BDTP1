@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -58,6 +59,19 @@ public class Edit_EscolherController implements Initializable {
     private ObservableList<ObservableList> data;
     int facturaID_selecionada;
     private databaseConnection dbc = new databaseConnection();
+
+    @FXML
+    private void handleChoiceBox(ActionEvent event){
+        
+        System.out.println(CBIsolLevel.getSelectionModel().getSelectedItem().toString());
+        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + CBIsolLevel.getSelectionModel().getSelectedItem().toString())){
+            System.out.println("Failed to set isolation level");
+            dbc.createSettingQuery("ROLLBACK");
+            return;
+        }
+        
+    }
+            
 
     @FXML
     private void handleActioVoltar(ActionEvent event) {
