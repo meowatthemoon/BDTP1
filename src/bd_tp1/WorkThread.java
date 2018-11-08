@@ -150,7 +150,7 @@ public class WorkThread extends Thread {
             ref = "G1-"+date.getString(1);
             System.out.println("REFERÊNCIA : "+ref);
         } catch (SQLException ex) {
-            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+            System.out.println("ERRRRRRRRO!!!!! THIS SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
             return;
         }
         //setup
@@ -163,9 +163,6 @@ public class WorkThread extends Thread {
         String nome = randomString(12);
         //generation of address
         String address = randomString(30);
-        //testing purposes
-        System.out.println(nome + "   " + address);
-        
         //Log
         dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Begin',GetDate(),'"+ref+"')");
         //Begin Transaction
@@ -175,36 +172,42 @@ public class WorkThread extends Thread {
             return;
         }
         //Inserir Fatura
-        ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
+        boolean sucess = false;
         try{
-            if(rs.next())
-                factID = rs.getInt(1) + 1;
-            else
-                factID = 1;
-        } catch (SQLException ex){
+            for(int i=0;i<5;i++){
+                ResultSet rs= dbc.createQuery("Select max(FacturaID) from Factura");
+                if(rs.next())
+                    factID = rs.getInt(1) + 1;
+                else
+                    factID = 1;
+                if(i<3)
+                    factID = 1;
+                if(dbc.createModificationQuery("INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')")==-1){
+                    continue;
+                } else{
+                    inserirLinhas(factID, ref);
+                    sucess = true;
+                    System.out.println("Sucess at try # " + (i+1));
+                    break;
+                }
+            }
+            if(!sucess)
+                System.out.println("Failed to insert all 5 tries");
+        } catch(Exception ex){
             System.out.println(ex.getMessage());
-            dbc.createSettingQuery("ROLLBACK");
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Rollback',GetDate(),'"+ref+"')");
-            
-            System.out.println("Transaction Ended Failed to attain max ID");
-            return;
         }
-        if(dbc.createModificationQuery("INSERT INTO Factura VALUES (" + factID + "," + clientID + ",'" + nome + "','" + address + "')")==-1){
-            dbc.createSettingQuery("ROLLBACK");
-            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Rollback',GetDate(),'"+ref+"')");
-            return;
-        }
-               
-        
+    }
+    
+    public void inserirLinhas(int factID, String ref){
         //Depois de inserimos a Fatura, temos de inserir as suas linhas, assim como os seus produtos.
         //Vamos primeiro fazer um ciclo de quantos produtos a fatura irá ter, vamos supor de 2 a 10;
-        Random r = new Random();
+        Random random = new Random();
         int Low = 2;
         int High = 10;
-        int numeroProdutos = r.nextInt(High-Low) + Low;
+        int numeroProdutos = random.nextInt(High-Low) + Low;
         
         //Criar uma FactLinha para cada Produto:
-        for (int i = 0; i <numeroProdutos ; i++){
+        for (int y = 0; y <numeroProdutos ; y++){
             
             int produtoID = Math.abs(random.nextInt()) + 1;
             String designacao = randomString(20);
@@ -222,8 +225,8 @@ public class WorkThread extends Thread {
         dbc.createSettingQuery("COMMIT");
         dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('I','Commit',GetDate(),'"+ref+"')");
         System.out.println("Transaction Ended");
-            
     }
+    
     public void update(){
         //referência da transação para o log
         String ref;
