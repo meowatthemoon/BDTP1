@@ -63,6 +63,8 @@ public class BrowserController implements Initializable {
     @FXML
     private void handleActioRefresh(ActionEvent event) {
         try{
+            TVfatura.getItems().clear();
+            TVfatura.getColumns().clear();
             mostraFacturas();
         } catch(NumberFormatException ex){
             System.out.println(ex.getMessage());
@@ -220,6 +222,9 @@ public class BrowserController implements Initializable {
         
         //facturaID_selecionada = 0;//pk na definicao da tabela os IDS teem de ser >=1
 
+        TVfatura.getItems().clear();
+        TVfatura.getColumns().clear();
+        
         timer = new Thread() {
             public void run() {
                 while (timer != null) {
