@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,6 +61,19 @@ public class Edit_EscolherController implements Initializable {
     private databaseConnection dbc = new databaseConnection();
 
     @FXML
+    private void handleChoiceBox(ActionEvent event){
+        
+        System.out.println(CBIsolLevel.getSelectionModel().getSelectedItem().toString());
+        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + CBIsolLevel.getSelectionModel().getSelectedItem().toString())){
+            System.out.println("Failed to set isolation level");
+            dbc.createSettingQuery("ROLLBACK");
+            return;
+        }
+        
+    }
+            
+
+    @FXML
     private void handleActioVoltar(ActionEvent event) {
         Parent window3; //we need to load the layout that we want to swap
         try {
@@ -104,6 +118,8 @@ public class Edit_EscolherController implements Initializable {
                 Stage mainWindow; //Here is the magic. We get the reference to main Stage.
                 mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 mainWindow.setScene(newScene); //here we simply set the new scene
+                mainWindow.setTitle("Editar Fatura com " + CBIsolLevel.getSelectionModel().getSelectedItem().toString());
+                mainWindow.setResizable(false);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
