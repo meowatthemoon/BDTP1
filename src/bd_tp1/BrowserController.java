@@ -111,10 +111,16 @@ public class BrowserController implements Initializable {
             dataInicio.next();
             */
             //Query em si
+            dbc.createSettingQuery("BEGIN TRANSACTION");
+            dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
             String SQL = "SELECT TOP("+number+") * FROM Factura ORDER BY FacturaID desc";
             ResultSet rs = dbc.createQuery(SQL);
+            dbc.createSettingQuery("COMMIT");
             //Query de tempo
+            dbc.createSettingQuery("BEGIN TRANSACTION");
+            dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
             ResultSet media=dbc.createQuery("select DATEDIFF(MILLISECOND, min(dcriacao),GetDate()) from LogOperations where referencia IN(Select  TOP("+ number + ") Referencia from LogOperations order by DCriacao desc)");
+            dbc.createSettingQuery("COMMIT");
             media.next();
             /*
             //Fim da pesquisa
@@ -174,8 +180,10 @@ public class BrowserController implements Initializable {
     public void mostraLinhas(int ID) {
         data = FXCollections.observableArrayList();
         try{
-            
+            dbc.createSettingQuery("BEGIN TRANSACTION");
+            dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
             String SQL = "SELECT * FROM FactLinha WHERE FacturaID=" + ID;
+            dbc.createSettingQuery("COMMIT");
             //ResultSet
             ResultSet rs = dbc.createQuery(SQL);
 
