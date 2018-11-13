@@ -138,6 +138,7 @@ public class EditController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {        
         facturaID = editFactura.getFacturaID();
         nivelisolamento = editFactura.getNIFactura();
+        System.out.println(nivelisolamento);
         
         //Quando entra neste fxml, têm de indicar que começou uma transação, e que os outros não podem acede-la.
         
