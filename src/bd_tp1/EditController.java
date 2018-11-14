@@ -12,6 +12,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.TimerTask;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
@@ -46,28 +54,28 @@ public class EditController implements Initializable {
     int contador = 0;
     List<String> lista_produtos = new ArrayList<String>();
     List<String> lista_quantidades = new ArrayList<String>();
-    
-    @FXML TextField txtteste;
-    @FXML TextField txtdescricao;
 
- 
+    @FXML
+    TextField txtteste;
+    @FXML
+    TextField txtdescricao;
 
     //função para ir buscar elemento segundo colunas e linhas da gridpane.
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-    for (Node node : gridPane.getChildren()) {
-        if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-            return node;
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return node;
+            }
         }
+        return null;
     }
-    return null;
-    }
-    
+
     @FXML
     private void handleActioVoltar(ActionEvent event) {
-        
+
         dbc.createSettingQuery("ROLLBACK");
-        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Rollback',GetDate(),'"+ref+"')");
-        
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Rollback',GetDate(),'" + ref + "')");
+
         Parent window3; //we need to load the layout that we want to swap
         try {
             window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
@@ -77,27 +85,47 @@ public class EditController implements Initializable {
             mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
             mainWindow.setScene(newScene); //here we simply set the new scene
             mainWindow.setResizable(true);
-            mainWindow.setTitle("Edit");            
+            mainWindow.setTitle("Edit");
         } catch (IOException ex) {
         }
     }
 
     @FXML
-    private void handleActionUpdateNome(ActionEvent event){
-        
+    private void handleActionUpdateNome(ActionEvent event) {
+
         String sql1;
         //Testar se não está vazio
-        if ( txtNome.getText().toString().equals("") ||  txtNome.getText().toString().equals(" ")){
+        if (txtNome.getText().toString().equals("") || txtNome.getText().toString().equals(" ")) {
             System.out.println("Não pode ser Nome vazio!");
-        }
-        else{
+        } else {
             //Vamos mudar na Base de Dados, temos a faturaID
-            sql1 = "Update Factura " + "Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
-            System.out.println(sql1);
-            dbc.createModificationQuery(sql1);
+
+            //  TIME OUT
+            //
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future<String> future = executor.submit(new Callable() {
+
+                public String call() throws Exception {
+                    String sql1 = "Update Factura Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
+                    System.out.println(sql1);
+                    dbc.createModificationQuery(sql1);
+                    return "OK";
+                }
+            });
+            try {
+                System.out.println(future.get(15, TimeUnit.SECONDS)); //timeout is in 2 seconds
+            } catch (TimeoutException e) {
+                System.err.println("Timeout");
+            } catch (InterruptedException ex) {
+                System.out.println("error interrupted exeception timeout");
+            } catch (ExecutionException ex) {
+                System.out.println("error exectution exception timeout");
+            }
+            executor.shutdownNow();
+            //
         }
     }
-    
+
     @FXML
     private void handleActionCommit(ActionEvent event) {
         /*String sql;
@@ -128,65 +156,64 @@ public class EditController implements Initializable {
                 
             }
 
-            */
-            
-            //Voltar à página original
-            Parent window3; //we need to load the layout that we want to swap
-            try {
-                
-                //commit transaction
-                dbc.createSettingQuery("COMMIT");
-                dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'"+ref+"')");
-                
-                window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
-                Scene newScene; //then we create a new scene with our new layout
-                newScene = new Scene(window3);
-                Stage mainWindow; //Here is the magic. We get the reference to main Stage.
-                mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                mainWindow.setScene(newScene); //here we simply set the new scene
-                mainWindow.setResizable(true);
-                mainWindow.setTitle("Edit");            
-            } catch (IOException ex) {
-            }
-            
+         */
+
+        //Voltar à página original
+        Parent window3; //we need to load the layout that we want to swap
+        try {
+
+            //commit transaction
+            dbc.createSettingQuery("COMMIT");
+            dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Commit',GetDate(),'" + ref + "')");
+
+            window3 = FXMLLoader.load(getClass().getResource("Edit_Escolher.fxml"));
+            Scene newScene; //then we create a new scene with our new layout
+            newScene = new Scene(window3);
+            Stage mainWindow; //Here is the magic. We get the reference to main Stage.
+            mainWindow = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            mainWindow.setScene(newScene); //here we simply set the new scene
+            mainWindow.setResizable(true);
+            mainWindow.setTitle("Edit");
+        } catch (IOException ex) {
+        }
+
         //}   
     }
-    
-    
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) {        
+    public void initialize(URL url, ResourceBundle rb) {
+        
         facturaID = editFactura.getFacturaID();
         nivelisolamento = editFactura.getNIFactura();
         System.out.println(nivelisolamento);
-        
+
         //Quando entra neste fxml, têm de indicar que começou uma transação, e que os outros não podem acede-la.
-        
         //referência da transação para o log
         try {
-            ResultSet date=dbc.createQuery("select GetDate()");
+            ResultSet date = dbc.createQuery("select GetDate()");
             date.next();
-            ref = "G1-"+date.getString(1);
-            System.out.println("REFERÊNCIA : "+ref);
+            ref = "G1-" + date.getString(1);
+            System.out.println("REFERÊNCIA : " + ref);
         } catch (SQLException ex) {
-            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :"+ex.getMessage());
+            System.out.println("ERRRRRRRRO!!!!! THIS SHIT SHUD NEVER DISPLAY - OBTER DATA PARA CONSTRUIR REFERENCIA NO INSERT :" + ex.getMessage());
             return;
         }
 
         //Log
-        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'"+ref+"')");
+        dbc.createModificationQuery("insert into LogOperations(EventType, Objecto, Valor, Referencia) values('U','Begin',GetDate(),'" + ref + "')");
         //Begin Transaction
         dbc.createSettingQuery("BEGIN TRANSACTION");
         System.out.println("**************BEGIN TRANSACTION *************");
         //Isolation Level
         System.out.println(nivelisolamento);
-        if(!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)){
+        if (!dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL " + nivelisolamento)) {
             System.out.println("Failed to set isolation level");
             dbc.createSettingQuery("ROLLBACK");
             return;
         }
+
         
-        
-        ResultSet rs = new databaseConnection().createQuery("Select Nome from Factura where FacturaID=" + facturaID);
+        ResultSet rs = editFactura.getResultSet();
         try {
             rs.next();
             txtNome.setText(rs.getString("Nome"));
@@ -201,46 +228,64 @@ public class EditController implements Initializable {
         try {
             while (produtos.next()) {
                 System.out.println(index_linha);
-                Label produtoid = new Label(produtos.getInt("ProdutoID")+""); 
-                lista_produtos.add(contador,produtoid.getText());
+                Label produtoid = new Label(produtos.getInt("ProdutoID") + "");
+                lista_produtos.add(contador, produtoid.getText());
                 gridProdutos.add(produtoid, 0, index_linha);
-                TextField txt2=new TextField(produtos.getString("Designacao")+"");
+                TextField txt2 = new TextField(produtos.getString("Designacao") + "");
                 gridProdutos.add(txt2, 1, index_linha);
-                TextField txt=new TextField(produtos.getInt("Qtd")+"");
+                TextField txt = new TextField(produtos.getInt("Qtd") + "");
                 gridProdutos.add(txt, 2, index_linha);
                 Label seta = new Label(" -> ");
-                gridProdutos.add(seta,3,index_linha);
+                gridProdutos.add(seta, 3, index_linha);
                 Button b = new Button("Atualizar");
                 b.setDefaultButton(true);
-                
-                b.setOnAction(new EventHandler<ActionEvent>(){
-                    @Override public void handle(ActionEvent e) {
-                        
-                        String sql;
-                        sql = "Update FactLinha " + "Set Qtd = '" + txt.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
-                        System.out.println(sql);
-                        System.out.println(dbc.createModificationQuery(sql));
-                        sql = "Update FactLinha " + "Set Designacao = '" + txt2.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
-                        System.out.println(sql);
-                        System.out.println(dbc.createModificationQuery(sql));
-                        
+
+                b.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent e) {
+
+                        //  TIME OUT
+                        //
+                        ExecutorService executor = Executors.newSingleThreadExecutor();
+                        Future<String> future = executor.submit(new Callable() {
+
+                            public String call() throws Exception {
+                                String sql;
+                                sql = "Update FactLinha " + "Set Qtd = '" + txt.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
+                                System.out.println(sql);
+                                System.out.println(dbc.createModificationQuery(sql));
+                                sql = "Update FactLinha " + "Set Designacao = '" + txt2.getText() + "'\n Where FacturaID = '" + facturaID + "' and ProdutoID = " + produtoid.getText();
+                                System.out.println(sql);
+                                System.out.println(dbc.createModificationQuery(sql));
+                                return "OK";
+                            }
+                        });
+                        try {
+                            System.out.println(future.get(5, TimeUnit.SECONDS)); //timeout is in 2 seconds
+                        } catch (TimeoutException exd) {
+                            System.err.println("Timeout");
+                        } catch (InterruptedException ex) {
+                            System.out.println("error interrupted exception");
+                        } catch (ExecutionException ex) {
+                            System.out.println("error execution exception");
+                        }
+                        executor.shutdownNow();
+                        //
+
                     }
                 });
-                
-                gridProdutos.add(b,4,index_linha);
+
+                gridProdutos.add(b, 4, index_linha);
 
                 //lista_quantidades.add(contador, txt.getText());
-                
                 //gridProdutos.add(b, 3, index_linha);
-                index_linha++;                 contador++;
+                index_linha++;
+                contador++;
             }
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
-        
+
     }
-    
-
-
 
 }

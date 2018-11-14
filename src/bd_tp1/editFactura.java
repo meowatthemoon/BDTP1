@@ -5,6 +5,8 @@
  */
 package bd_tp1;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author Andre
@@ -12,8 +14,10 @@ package bd_tp1;
 public class editFactura {
     private static int facturaID;
     private static String nivelisolamento;
-    public editFactura(int facturaID){
+    private static ResultSet rs;
+    public editFactura(int facturaID,ResultSet rs){
         this.facturaID=facturaID;
+        this.rs=rs;
     }
     public static int getFacturaID(){
         return facturaID;
@@ -23,5 +27,8 @@ public class editFactura {
     }
     public static String getNIFactura(){
         return nivelisolamento;
+    }
+    public static ResultSet getResultSet(){
+        return rs;
     }
 }
