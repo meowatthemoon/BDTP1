@@ -9,6 +9,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -63,8 +70,7 @@ public class BrowserController implements Initializable {
     @FXML
     private void handleActioRefresh(ActionEvent event) {
         try{
-            TVfatura.getItems().clear();
-            TVfatura.getColumns().clear();
+            
             mostraFacturas();
         } catch(NumberFormatException ex){
             System.out.println(ex.getMessage());
@@ -89,12 +95,16 @@ public class BrowserController implements Initializable {
     
     @FXML
     private void handleActionMostrarLinhas(ActionEvent event){
-        TVfactLinha.getItems().clear();
-        TVfactLinha.getColumns().clear();
+        
         mostraLinhas(Integer.parseInt(TVfatura.getSelectionModel().getSelectedItem().toString().substring(1,TVfatura.getSelectionModel().getSelectedItem().toString().indexOf(","))));
     }
 
     public void mostraFacturas() {
+        
+        
+        //FAZER TIME OUT
+        
+        
         data = FXCollections.observableArrayList();
         int number=50;
         try{
@@ -113,8 +123,42 @@ public class BrowserController implements Initializable {
             //Query em si
             dbc.createSettingQuery("BEGIN TRANSACTION");
             dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
-            String SQL = "SELECT TOP("+number+") * FROM Factura ORDER BY FacturaID desc";
-            ResultSet rs = dbc.createQuery(SQL);
+        }catch(Exception e){
+              e.printStackTrace();
+              System.out.println("Error on Building Data");             
+        }
+        ResultSet rs;
+        //  TIME OUT
+        //
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<ResultSet> future = executor.submit(new Callable() {
+
+            public ResultSet call() throws Exception {
+                String SQL = "SELECT TOP("+Integer.parseInt(txtNumber.getText())+") * FROM Factura ORDER BY FacturaID desc";
+                ResultSet rs = dbc.createQuery(SQL);
+                return rs;
+            }
+        });
+        try {
+            rs=future.get(5, TimeUnit.SECONDS); //timeout is in 2 seconds
+        } catch (TimeoutException e) {
+            System.err.println("Timeout");
+            dbc.createSettingQuery("ROLLBACK");
+            return;
+        } catch (InterruptedException ex) {
+            System.out.println("error interruptedexception");
+            dbc.createSettingQuery("ROLLBACK");
+            return;
+        } catch (ExecutionException ex) {
+            System.out.println("error executionexception");
+            dbc.createSettingQuery("ROLLBACK");
+            return;
+        }
+        executor.shutdownNow();
+        //
+        TVfatura.getItems().clear();
+        TVfatura.getColumns().clear();
+        try{
             dbc.createSettingQuery("COMMIT");
             //Query de tempo
             dbc.createSettingQuery("BEGIN TRANSACTION");
@@ -178,14 +222,48 @@ public class BrowserController implements Initializable {
     }
 
     public void mostraLinhas(int ID) {
+        
+        
+        
         data = FXCollections.observableArrayList();
         try{
             dbc.createSettingQuery("BEGIN TRANSACTION");
             dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
-            String SQL = "SELECT * FROM FactLinha WHERE FacturaID=" + ID;
             dbc.createSettingQuery("COMMIT");
-            //ResultSet
-            ResultSet rs = dbc.createQuery(SQL);
+        }catch(Exception e){
+        }
+        ResultSet rs;
+        
+        //  TIME OUT
+        //
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Future<ResultSet> future = executor.submit(new Callable() {
+
+            public ResultSet call() throws Exception {
+                //ResultSet
+                String SQL = "SELECT * FROM FactLinha WHERE FacturaID=" + ID;
+                ResultSet rs = dbc.createQuery(SQL);
+                return rs;
+            }
+        });
+        try {
+            rs=future.get(5, TimeUnit.SECONDS); //timeout is in 2 seconds
+        } catch (TimeoutException e) {
+            System.err.println("Timeout");
+            return;
+        } catch (InterruptedException ex) {
+            System.out.println("error interruptedexception");
+            return;
+        } catch (ExecutionException ex) {
+            System.out.println("error executionexception");
+            return;
+        }
+        executor.shutdownNow();
+        //
+        TVfactLinha.getItems().clear();
+        TVfactLinha.getColumns().clear();
+            
+        try{
 
             /**********************************
              * TABLE COLUMN ADDED DYNAMICALLY *
