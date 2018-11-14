@@ -70,7 +70,7 @@ public class BrowserController implements Initializable {
     @FXML
     private void handleActioRefresh(ActionEvent event) {
         try{
-            
+            System.out.println("TEMP:clicaste no botao refresh");
             mostraFacturas();
         } catch(NumberFormatException ex){
             System.out.println(ex.getMessage());
@@ -101,7 +101,7 @@ public class BrowserController implements Initializable {
 
     public void mostraFacturas() {
         
-        
+        System.out.println("TEMP: entraste no mostra facturas");
         //FAZER TIME OUT
         
         
@@ -130,12 +130,18 @@ public class BrowserController implements Initializable {
         ResultSet rs;
         //  TIME OUT
         //
+        System.out.println("TEMP: antes do timeout");
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<ResultSet> future = executor.submit(new Callable() {
 
             public ResultSet call() throws Exception {
+                
+                System.out.println("TEMP: dentro do timeout");
+                
                 String SQL = "SELECT TOP("+Integer.parseInt(txtNumber.getText())+") * FROM Factura ORDER BY FacturaID desc";
                 ResultSet rs = dbc.createQuery(SQL);
+                System.out.println("TEMP: vou sair do timeout");
+                dbc.createSettingQuery("COMMIT");
                 return rs;
             }
         });
@@ -143,23 +149,24 @@ public class BrowserController implements Initializable {
             rs=future.get(5, TimeUnit.SECONDS); //timeout is in 2 seconds
         } catch (TimeoutException e) {
             System.err.println("Timeout");
-            dbc.createSettingQuery("ROLLBACK");
+            System.out.println("TEMP: esquece o raio do rollback");
             return;
         } catch (InterruptedException ex) {
             System.out.println("error interruptedexception");
-            dbc.createSettingQuery("ROLLBACK");
             return;
         } catch (ExecutionException ex) {
             System.out.println("error executionexception");
-            dbc.createSettingQuery("ROLLBACK");
             return;
         }
         executor.shutdownNow();
+        
+        System.out.println("TEMP: passei do timeout");
         //
         TVfatura.getItems().clear();
         TVfatura.getColumns().clear();
+        System.out.println("TEMP: dei clear");
         try{
-            dbc.createSettingQuery("COMMIT");
+            
             //Query de tempo
             dbc.createSettingQuery("BEGIN TRANSACTION");
             dbc.createSettingQuery("SET TRANSACTION ISOLATION LEVEL READ COMMITTED");
@@ -219,6 +226,7 @@ public class BrowserController implements Initializable {
               e.printStackTrace();
               System.out.println("Error on Building Data");             
           }
+        System.out.println("TEMP: ate sai daqui");
     }
 
     public void mostraLinhas(int ID) {
