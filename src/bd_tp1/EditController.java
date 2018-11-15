@@ -92,7 +92,7 @@ public class EditController implements Initializable {
 
     @FXML
     private void handleActionUpdateNome(ActionEvent event) {
-
+        System.out.println(" TEMP: Clicaste no atualizar");
         String sql1;
         //Testar se não está vazio
         if (txtNome.getText().toString().equals("") || txtNome.getText().toString().equals(" ")) {
@@ -106,16 +106,21 @@ public class EditController implements Initializable {
             Future<String> future = executor.submit(new Callable() {
 
                 public String call() throws Exception {
+                    System.out.println(" TEMP: entraste no timer");
+                    
                     String sql1 = "Update Factura Set Nome = '" + txtNome.getText().toString() + "'\n Where FacturaID = " + facturaID;
                     System.out.println(sql1);
                     dbc.createModificationQuery(sql1);
+                    System.out.println(" TEMP: passaste o update");
                     return "OK";
                 }
             });
             try {
                 System.out.println(future.get(15, TimeUnit.SECONDS)); //timeout is in 2 seconds
+                
             } catch (TimeoutException e) {
                 System.err.println("Timeout");
+                System.out.println(" TEMP: deu timeout");
             } catch (InterruptedException ex) {
                 System.out.println("error interrupted exeception timeout");
             } catch (ExecutionException ex) {
@@ -123,6 +128,7 @@ public class EditController implements Initializable {
             }
             executor.shutdownNow();
             //
+            System.out.println(" TEMP: saiste do metodo");
         }
     }
 
